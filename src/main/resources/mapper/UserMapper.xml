@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.Mybatis.mapper.UserMapper">
+    <select id="findAll" resultType="user">
+        SELECT *
+        FROM user;
+    </select>
+
+    <select id="findUserById" resultType="user">
+        SELECT *
+        FROM user 
+        WHERE id = #{id};
+    </select>
+
+    <select id="findUserByName" resultType="user">
+        SELECT *
+        FROM user 
+        WHERE name = #{name};
+    </select>
+
+    <select id="findUserByIdAndPassword" resultType="user">
+        SELECT *
+        FROM user 
+        WHERE id = #{id} and pw = #{pw} 
+    </select>
+
+    <select id="countUserById" resultType="int">
+        SELECT count(*) 
+        FROM user 
+        WHERE id = #{id}
+    </select>
+
+    <select id="countUserByName" resultType="int">
+        SELECT count(*)
+        FROM user
+        WHERE name = #{name}
+    </select>
+    
+
+    <insert id="createUser" parameterType="user">
+        INSERT 
+        INTO user (id, pw, name, tel, email, create_date, role)
+        VALUES (#{id}, #{pw}, #{name}, #{tel}, #{email}, #{create_date}, #{role});
+    </insert>
+
+    <update id="updateUser" parameterType="hashmap">
+        UPDATE user
+        SET id = #{user.id}, pw = #{user.pw}, name = #{user.name}, tel = #{user.tel}
+        WHERE id = #{curId};
+    </update>
+
+    <update id="updatePassword" parameterType="hashmap">
+        UPDATE user
+        SET pw = #{pw}
+        WHERE id = #{curId}
+    </update>
+</mapper>

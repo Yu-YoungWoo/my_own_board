@@ -1,0 +1,190 @@
+* { 
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    font-family: "Malgun Gothic", sans-serif;
+    min-height: 100vh;
+}
+
+p {
+    margin: 0px;
+}
+
+td {
+    border-top: 1px solid #eee;
+    vertical-align: middle;
+}
+
+th {
+    height: 45px;
+    border-width: 0 0 1px;
+    border-top: 2px solid gray;
+    vertical-align: middle;
+    text-align: center;
+}
+
+#postRow:hover {
+    background-color: #f2f2f2;
+}
+
+input::placeholder {
+    color: #F0F0F0;
+    font-weight: lighter;
+}
+
+footer {
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+}
+
+textarea::placeholder {
+    color: #ccc;
+    font-weight: lighter;
+  }
+
+#write-Textarea {
+    width: 100%;
+    height: 350px;
+    resize:none;
+}
+
+#comment-Textarea {
+    width: 100%;
+    height: 150px;
+    resize: none;
+}
+
+.cursor {
+    cursor: pointer;
+}
+
+
+.w-55 {
+    width: 55%;
+}
+
+.container {
+    max-width: 1000px;
+}
+
+.window-size-fixed {
+    width: 1200px;
+    height: 100vh;
+}
+
+.form-container {
+    width: 75%;
+}
+
+.form-background-color {
+    background-color: #F0F0F0;
+}
+
+.form-button-color {
+    background-color: #3498db; /* 밝은 파란색 */
+    border-color: #3498db; /* 테두리 색상도 동일하게 설정 */
+    color: #ffffff; /* 글자색은 흰색 */
+}
+
+.form-control:focus {
+    border-color: #3498db;
+}
+
+.font-nowrap {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    
+}
+
+.form-label {
+    margin-left: 3px;
+}
+
+.custom-shadow {
+    box-shadow: 0px 2px 10px 1px rgb(200, 200, 200);
+}
+
+.m-6 {
+    margin: 45%;
+}
+
+.board-list {
+    width: 100%;
+    border-bottom: 1px solid gray;
+    font-size: 15px;
+}
+
+.board-list td {
+    padding: 0px 4px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.panel .board-list td {
+    height: 40px;
+}
+
+.b-title {
+    position: relative;
+    text-align: left;
+    max-width: 24%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    box-sizing: border-box;
+}
+
+.b-title a {
+    display: inline-block;
+    max-width: 15%;
+    vertical-align: middle;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.search {
+    width: 100%;
+}
+
+.write-submit-btn {
+    width: 100px;
+    height: 50px;
+    font-size: 1.1rem;
+}
+
+.create_date::before {
+    content: "";
+    display: inline-block;
+    width: 1px;
+    height: 12px;
+    background-color: #ccc;
+    margin: 0 8px 0 8px;
+    vertical-align: -2px;
+}
+
+.post_author {
+    position: relative;
+    font-size: 15px;
+}
+
+
+.fl {
+    cursor: pointer;
+    float: left;
+}
+.fr {
+    cursor: pointer;
+    float: right;
+}
+
+.recom_up, .recom_down {
+    text-align: center;
+    width: 70px;
+    height: 50px;
+}

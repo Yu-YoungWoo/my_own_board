@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.Mybatis.mapper.BoardMapper">
+
+    <select id="countTotalPost" resultType="int">
+        SELECT count(*) FROM post; 
+    </select>
+
+    <select id="findAll" resultType="post">
+        SELECT pri_no, title, content, author, views, likes, dislikes, create_date 
+        FROM post;
+    </select>
+
+    <select id="findListWithPaging" resultType="post">
+        SELECT pri_no, title, content, author, views, likes, dislikes, create_date  
+        FROM post 
+        ORDER BY pri_no DESC 
+        LIMIT #{startPost}, 10; 
+    </select>
+
+    <select id="findPostWithPostNum" resultType="post">
+        SELECT pri_no, title, content, author, views, likes, dislikes, create_date
+        FROM post
+        WHERE pri_no = ${postNum};
+    </select>
+
+    <select id="countPostJoinUser" resultType="int">
+        SELECT count(*)
+        FROM post p join user u on p.author = u.name
+        WHERE p.author = #{author} and u.id = #{id} and p.pri_no = #{pri_no};
+    </select>
+
+
+    <select id="findPostWithSearchQuery" resultType="post">
+        SELECT pri_no, title, content, author, views, likes, dislikes, create_date 
+        FROM post
+        <where>
+            <choose>
+                <when test="search_type == 'author_title'">
+                    (author LIKE CONCAT('%', #{query}, '%') OR title LIKE CONCAT('%', #{query}, '%'))
+                </when>
+
+                <when test ="search_type == 'title'">
+                    ${search_type} LIKE CONCAT('%', #{query}, '%')
+                </when>
+                <when test="search_type == 'author'">
+                    ${search_type} LIKE CONCAT('%', #{query}, '%')
+                </when>
+            </choose>
+        </where>
+        ORDER BY create_date desc;
+    </select>
+
+    <insert id="insertPost" parameterType="post">
+        INSERT 
+        INTO post(title, content, author, views, likes, dislikes, create_date) 
+        VALUES(#{title}, #{content}, #{author}, 0, 0, 0, #{create_date})
+    </insert>
+
+    <update id="updatePostWithPostNum" parameterType="post">
+        UPDATE post
+        SET title = #{title}, content = #{content}, create_date = #{create_date}
+        WHERE pri_no = #{pri_no};
+    </update>
+    
+    <delete id="deletePostWithPostNum" parameterType="int">
+        DELETE FROM post 
+        WHERE pri_no = #{postNum};
+    </delete>
+</mapper>
