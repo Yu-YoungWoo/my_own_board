@@ -12,7 +12,7 @@
         <div class="shadow rounded-4 p-3 m-5 bg-white">
             <div class="row m-4">
                 <div class="col text-center">
-                    <a href="/"><img class="rounded img-fluid" src="/img/sample.jpg" alt="Sample Image" width="75%" height="75%"/></a>
+                    <img class="rounded img-fluid" src="/img/sample.jpg" alt="Sample Image" width="75%" height="75%"/>
                 </div>
             </div>
             <div class="row justify-content-center mb-4">

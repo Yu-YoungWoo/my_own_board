@@ -45,7 +45,7 @@ public class SecurityConfig{
                         .antMatchers("/join", "/login", "/help/**", "/idDupCheck").permitAll()
                         .antMatchers("/admin", "/admin/**").hasAuthority(UserRole.ADMIN.name())
                         // .anyRequest().authenticated()
-                        .anyRequest().permitAll()
+                        .anyRequest().authenticated()
         )
         .formLogin(formLogin ->
                 {
