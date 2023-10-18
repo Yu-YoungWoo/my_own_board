@@ -77,6 +77,10 @@
                 <div class="row mt-4">
                     <textarea id="comment-Textarea" class="form-control" name="comment" placeholder="타인의 권리를 침해하거나 명예를 훼손하는 댓글은 운영원칙 및 관련 법률에 제재를 받을 수 있습니다."></textarea>
                 </div>
+
+                <div class="row mt-2">
+                    <button class="btn btn-secondary">등록</button>
+                </div>
             </div>
         </div>
         

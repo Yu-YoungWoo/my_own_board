@@ -32,9 +32,9 @@
                         <th scope="col">추천</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <c:forEach items="${posts}" var="post">
-                        <tr id="postRow" onclick="window.location.href='/post/${post.pri_no}'" style="cursor: pointer;">
+                <tbody id="posts">
+                    <c:forEach items="${posts}" var="post" varStatus="status">
+                        <tr id="postRow-${status.count}" class="pointer post-row" onclick="window.location.href='/post/${post.pri_no}'">
                             <td class="b-num">${post.pri_no}</td>
                             <td class="b-title">${post.title}</td>
                             <td class="b-auth">${post.author}</td>
@@ -58,7 +58,9 @@
                         </c:if>
 
                         <c:forEach begin="${startPage}" end="${endPage}" var="pageNumber">   
-                            <li class="page-item"><a class="page-link" href="/?page=${pageNumber}">${pageNumber}</a></li>
+                            <li class="page-item">
+                                <a class="page-link" href="/?page=${pageNumber}">${pageNumber}</a>
+                            </li>
                         </c:forEach>
 
                         <c:if test="${next}">

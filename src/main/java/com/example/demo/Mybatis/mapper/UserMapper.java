@@ -30,8 +30,7 @@ public interface UserMapper {
 
     int updatePassword(LinkedHashMap<String, Object> map);
 
-
     // Delete User
-    String deleteUser(String u_id);
+    int deleteUser(String id);
     
 }

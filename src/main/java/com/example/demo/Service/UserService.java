@@ -45,7 +45,7 @@ public class UserService {
     }
 
     /**
-     * 
+     * 유저 중복 체크를 위한 count
      * @param id - User 테이블의 Id
      * @return - true or false
      */
@@ -56,6 +56,17 @@ public class UserService {
         if(findRows == 0) {
             return "true";
         }
+        return "false";
+    }
+
+    public String countUserByName(String name) {
+        
+        int findRows = userMapper.countUserByName(name);
+
+        if(findRows == 0) {
+            return "true";
+        }
+
         return "false";
     }
 
@@ -153,6 +164,16 @@ public class UserService {
 
         return updateMap;
         
+    }
+
+    public String deleteUser(String id) {
+        int deleteRows = userMapper.deleteUser(id);
+
+        if(deleteRows == 1) {
+            return "redirect:/login";
+        } 
+        
+        return "redirect:/user-detail";
     }
 
 

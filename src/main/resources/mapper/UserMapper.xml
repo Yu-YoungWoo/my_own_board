@@ -54,4 +54,9 @@
         SET pw = #{pw}
         WHERE id = #{curId}
     </update>
+
+    <delete id="deleteUser" parameterType="string">
+        DELETE FROM user
+        WHERE id = #{id}
+    </delete>
 </mapper>

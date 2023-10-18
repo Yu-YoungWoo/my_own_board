@@ -8,15 +8,49 @@ $(document).ready(function() {
             $.ajax({
                 type: 'POST',
                 data: {id : id},
-                url: "http://localhost:8080/idDupCheck",
+                dataType: "text",
+                url: "http://localhost:8080/check/idDupCheck",
                 success: function(result) {
                     if (result === "true") {
                         $("#IdNotDupAlert").show(); // 중복되지 않은 아이디
                         $("#IdDupAlert").hide();     // 중복된 아이디 숨기기
-                    } else {
+                    } else if(result == "false") {
                         $("#IdNotDupAlert").hide(); // 중복되지 않은 아이디 숨기기
                         $("#IdDupAlert").show();     // 중복된 아이디 표시
+                    } else {
+                        $("#IdNotDupAlert").hide(); 
+                        $("#IdDupAlert").hide();     
                     }
+                }
+            });
+        }
+    }
+
+    function checkDupName() {
+        const name = $("#name").val().trim();
+
+        console.log("name : " + name);
+        if(name != "") {
+            $.ajax({
+                type: 'POST',
+                data: {name : name},
+                dataType: "text",
+                url: "http://localhost:8080/check/nameDupCheck",
+                success: function(result) {
+                    console.log("result : " + result);
+                    if(result == "true") {
+                        $("#NameNotDupAlert").show();
+                        $("#NameDupAlert").hide();
+                    } else if(result == "false"){
+                        $("#NameNotDupAlert").hide();
+                        $("#NameDupAlert").show();
+                    } else {
+                        $("#NameNotDupAlert").hide();
+                        $("#NameDupAlert").hide();
+                    }
+                },
+                error: function(error) {
+
                 }
             });
         }
@@ -24,12 +58,24 @@ $(document).ready(function() {
 
     // 클릭 이벤트 핸들러에서 함수를 호출하도록 합니다.
     $("#checkDupId").click(checkDupId);
+    $("#checkDupName").click(checkDupName);
 
 
-    $("#close").click(function() {
+    $("#id-not-dup-close").click(function() {
         $("#IdNotDupAlert").hide();
+    });
+
+    $("#id-dup-close").click(function() {
         $("#IdDupAlert").hide();
     });
+
+    $("#name-not-dup-close").click(function() {
+        $("#NameNotDupAlert").hide();
+    });
+
+    $("#name-dup-close").click(function() {
+        $("#NameDupAlert").hide();
+    })
 
     $(function() {
         $("#IdNotDupAlert").hide();
@@ -39,6 +85,8 @@ $(document).ready(function() {
         $("#invalidNameMsg").hide();
         $("#invalidTelMsg").hide();
         $("#invalidEmailMsg").hide();
+        $("#NameNotDupAlert").hide();
+        $("#NameDupAlert").hide();
     });
 
     function toggleInvalidMsg(inputId, show) {

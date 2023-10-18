@@ -79,17 +79,6 @@ public class BoardController {
     }
     
 
-
-    @GetMapping("/search")
-    public String GET_search(@RequestParam("query") String query, @RequestParam("search_type") String search_type, Model model) {
-
-        map.put("search_posts", boardService.findPostWithSearchQuery(query, search_type));
-
-        model.addAttribute("search_posts", map.get("search_posts"));
-
-        return "board";
-    }
-
     @GetMapping("/write")
     public String GET_write(Model model, Authentication auth) {
         

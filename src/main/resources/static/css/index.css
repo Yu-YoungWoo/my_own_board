@@ -59,6 +59,7 @@ textarea::placeholder {
     resize: none;
 }
 
+
 .cursor {
     cursor: pointer;
 }
@@ -98,7 +99,6 @@ textarea::placeholder {
 .font-nowrap {
     white-space: nowrap;
     text-overflow: ellipsis;
-    
 }
 
 .form-label {
@@ -123,6 +123,11 @@ textarea::placeholder {
     padding: 0px 4px;
     white-space: nowrap;
     text-overflow: ellipsis;
+}
+
+
+.post-row:hover {
+    background-color: #ddd;
 }
 
 .panel .board-list td {
@@ -173,13 +178,14 @@ textarea::placeholder {
     font-size: 15px;
 }
 
+.pointer {
+    cursor: pointer;
+}
 
 .fl {
-    cursor: pointer;
     float: left;
 }
 .fr {
-    cursor: pointer;
     float: right;
 }
 

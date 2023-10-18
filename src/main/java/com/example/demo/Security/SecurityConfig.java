@@ -42,7 +42,7 @@ public class SecurityConfig{
         .headers(headers -> headers.cacheControl(cache -> cache.disable()))
         .authorizeRequests(authorizeRequests ->
                 authorizeRequests
-                        .antMatchers("/join", "/login", "/help/**", "/idDupCheck").permitAll()
+                        .antMatchers("/join", "/login", "/help/**", "/check/**").permitAll()
                         .antMatchers("/admin", "/admin/**").hasAuthority(UserRole.ADMIN.name())
                         // .anyRequest().authenticated()
                         .anyRequest().authenticated()

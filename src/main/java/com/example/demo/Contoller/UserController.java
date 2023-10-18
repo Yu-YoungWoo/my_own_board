@@ -13,7 +13,6 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.demo.DTO.joinForm;
@@ -100,21 +99,17 @@ public class UserController {
         return "user/user_detail";
 
     }
+ 
+    @PostMapping("/deleteUser")
+    public String POST_deleteUser(@RequestParam(required = true) String id, RedirectAttributes redirectAttributes) {
+        String deleteURL = userService.deleteUser(id);
 
-    @PostMapping("/idDupCheck")
-    @ResponseBody
-    public String POST_joinCheck(@RequestParam(required = false) String id) {
-        String checkDupId = "init";
-
-        System.out.println("id : " + id);
-
-        if(id != null) {
-            checkDupId = userService.countUserById(id);
-            System.out.println("checkDupId : " + checkDupId);
-            return checkDupId;   
+        if(deleteURL.equals("redirect:/user-detail")) {
+            redirectAttributes.addFlashAttribute("userDeleteFailStatus", true);
+            redirectAttributes.addFlashAttribute("userDeleteFailMsg", "계정 삭제 실패");
         }
 
-        return checkDupId;
+        return deleteURL;
     }
 
     /**
@@ -195,11 +190,12 @@ public class UserController {
             return "redirect:/user-password-modify";
         }
 
-
          passwordModifyMap = userService.updatePassword(form, findUser.getId());
 
-         if(passwordModifyMap.containsKey("")) {
+         if(passwordModifyMap.containsKey("updatePasswordFailStatus")) {
+            redirectAttributes.addFlashAttribute("map", passwordModifyMap);
 
+            return "redirect:/user-password-modify";
          }
 
         return "redirect:/user-detail";

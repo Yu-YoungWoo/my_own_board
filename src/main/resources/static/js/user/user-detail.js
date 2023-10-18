@@ -1,20 +1,72 @@
 $(document).ready(function() {
 
+    function formatTimeDifference(timeDiff) {
+        const timeUnits = [
+            { unit: "일", divisor: 24 * 60 * 60 * 1000 },
+            { unit: "시간", divisor: 60 * 60 * 1000 },
+            { unit: "분", divisor: 60 * 1000 },
+            { unit: "초", divisor: 1000 },
+        ];
+
+        for(const unitData of timeUnits) {
+            const unitDiff = Math.floor(timeDiff / unitData.divisor);
+
+            if(unitDiff >= 1) {
+                return unitDiff + unitData.unit + " 전";
+            }
+        }
+        return "방금 전";
+    }
+
+    function displayUserDeleteFailToast(timeDiff) {
+        const toastHTML = `
+            <div id="UserDeleteFailToast" class="toast hide fr" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="toast-header">
+                    <svg class="bi flex-shrink-0 me-2 align-middle ms-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
+                    <strong class="me-auto">계정 삭제 실패</strong>
+                    <small>${formatTimeDifference(timeDiff)}</small>
+                    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+                <div class="toast-body">
+                    계정 삭제 실패! 관리자에게 문의하세요.
+                </div>
+            </div>
+        `;
+    
+        // 동적으로 toast를 추가합니다.
+        $("#popup").append(toastHTML);
+    
+        // toast를 표시합니다.
+        $("#UserDeleteFailToast").toast('show');
+    }
+    
+
     function deleteUser() {
-        
+        const id = $("#curId").val();
+        const currentTime = new Date(); 
+
         $.ajax({
             type: 'POST',
             data: {id : id},
             url: "http://localhost:8080/deleteUser",
-            success: function(result) {
+            success: function() {
+                alert("계정 삭제가 완료되었습니다.");
+                window.location.href = "/login";
+            },
+            error: function() {
+                const errorTime = new Date();
 
+                const timeDiff = Math.floor((currentTime - errorTime) / 1000);
+                
+                displayUserDeleteFailToast(timeDiff);
+                return;
             }
         });
     }
 
     $("#user-delete").click(function() {
         const deleteConfirm = confirm("삭제하시겠습니까?");
-
+        
         if(deleteConfirm) {
             deleteUser();
         } else {
@@ -36,7 +88,7 @@ $(document).ready(function() {
                 $.ajax({
                     type: 'POST',
                     data: {id : id},
-                    url: "http://localhost:8080/idDupCheck",
+                    url: "http://localhost:8080/check/idDupCheck",
                     success: function(result) {
                         
                         if (result === "true") {

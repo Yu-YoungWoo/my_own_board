@@ -27,14 +27,14 @@
 
                     <div id="IdNotDupAlert" class="alert alert-success alert-dismissible fade show p-3 m-0 mt-2 cursor" role="alert">
                         <div class="d-flex justify-content-between align-items-center">
-                            <span class="">중복되지 않은 아이디입니다.</span>
-                            <i id="close" class="fa-solid fa-xmark fa-lg"></i>
+                            <span>중복되지 않은 아이디입니다.</span>
+                            <i id="id-not-dup-close" class="fa-solid fa-xmark fa-lg"></i>
                         </div>
                     </div>
                     <div id="IdDupAlert" class="alert alert-danger alert-dismissible fade show p-3 m-0 mt-2 cursor" role="alert">
                         <div class="d-flex justify-content-between align-items-center">
-                            <span class="">중복된 아이디입니다.</span>
-                            <i id="close" class="fa-solid fa-xmark fa-lg"></i>
+                            <span>중복된 아이디입니다.</span>
+                            <i id="id-dup-close" class="fa-solid fa-xmark fa-lg"></i>
                         </div>
                     </div>
                 </div>
@@ -50,10 +50,26 @@
             </div>
             <div class="row mb-3">
                 <div class="col">
-                    <label for="name">닉네임</label>                    
-                    <input id="name" type="text" class="form-control" placeholder="2자 이상 16자 이하, 영어 또는 숫자 또는 한글 조합" name="name" required/>
+                    <label for="name">닉네임</label>
+                    <div class="d-flex justify-content-start">                    
+                        <input id="name" type="text" class="form-control" placeholder="2자 이상 16자 이하, 영어 또는 숫자 또는 한글 조합" name="name" required/>
+                        <button type="button" id="checkDupName" class="btn btn-outline-secondary ms-2">중복 확인</button>
+                    </div>
 
-                    <div id="invalidNameMsg" class="invalid-feedback ms-1">공백은 허용하지 않습니다.</div>                    
+                    <div id="invalidNameMsg" class="invalid-feedback ms-1">공백은 허용하지 않습니다.</div> 
+
+                    <div id="NameNotDupAlert" class="alert alert-success alert-dismissible fade show p-3 m-0 mt-2 cursor" role="alert">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span>중복되지 않은 닉네임입니다.</span>
+                            <i id="name-not-dup-close" class="fa-solid fa-xmark fa-lg"></i>
+                        </div>
+                    </div>
+                    <div id="NameDupAlert" class="alert alert-danger alert-dismissible fade show p-3 m-0 mt-2 cursor" role="alert">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span>중복된 닉네임입니다.</span>
+                            <i id="name-dup-close" class="fa-solid fa-xmark fa-lg"></i>
+                        </div>
+                    </div>                   
                 </div>
             </div>
             <div class="row mb-3">
@@ -69,7 +85,7 @@
                 <div class="col">
                     <label for="email">이메일</label>
                     <input id="email" type="text" class="form-control" placeholder="example@example.com" name="email" required/>
-                    
+
                     <div id="invalidEmailMsg" class="invalid-feedback ms-1">이메일은 example@example.com 같이 형식에 맞게 입력해야 합니다.</div>
                 
                 </div>
