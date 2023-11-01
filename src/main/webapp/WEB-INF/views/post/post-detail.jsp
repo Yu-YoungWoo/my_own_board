@@ -8,13 +8,15 @@
    <%@ include file="../common/head.jsp" %>
 </head>
 <body class="form-background-color">
-
+  
     <div class="container-lg d-flex flex-column window-size-fixed">
         <!-- header -->
         <jsp:include page="../common/header.jsp"></jsp:include>
 
         <!-- Post Detail -->
         <div class="shadow rounded-4 p-4 bg-white panel">
+            <input type="hidden" id="pri_no" value="${map.get('post').pri_no}">
+            <!-- 헤더 -->
             <div class="row text-start pb-3" style="border-bottom: 1px solid #eee;">
                 <h3>${map.get("post").title}</h3>
                 <div class="post_author">
@@ -31,25 +33,30 @@
                         </span>
                         <span class="create_date">
                             <span class="me-1">추천</span>
-                            <span>${map.get("post").likes}</span>
+                            <span id="header-like">${map.get("post").likes}</span>
                         </span>
                     </div>
                 </div>
             </div>
+
+            <!-- 내용 -->
             <div class="row mt-5">
                 <div class="col">
                     <p>${map.get("post").content}</p>
                 </div>
             </div>
+
+            <!-- 추천 비추천 -->
             <div class="row" style="margin-top: 70px;">
                 <div class="col text-center">
-                    <span class="me-3 fs-3 align-middle fw-bold">${map.get("post").likes}</span>
-                    <button id="recom_up" type="button" class="btn btn-success me-3 recom_up"><span class="align-middle">추천</span></button>
-                    <button id="recom_down" type="button" class="btn btn-secondary recom_down"><span class="align-middle">비추천</span></button>
-                    <span class="ms-3 fs-3 align-middle fw-bold">${map.get("post").dislikes}</span>
+                    <span id="like" class="me-3 fs-3 align-middle fw-bold">${map.get("post").likes}</span>
+                    <input id="recom_up" type="button" value="추천" class="btn btn-success me-3 recom_up"></input>
+                    <input id="recom_down" type="button" value="비추천" class="btn btn-secondary recom_down"></input>
+                    <span id="dislike" class="ms-3 fs-3 align-middle fw-bold">${map.get("post").dislikes}</span>
                 </div>
             </div>
 
+            <!-- 댓글 -->
             <div class="mt-5">
                 <div class="row" style="border-bottom: 1px solid #eee;">
                     <div class="col text-start">
@@ -61,8 +68,7 @@
                     <c:if test="${canEditOrDelete}">
                         <div class="col text-end">
                             <a id="PostModify" class="fw-semibold link-dark link-underline link-underline-opacity-0 me-2" href="/post/${map.get('post').pri_no}/modify">수정</a>
-                            <a id="postDelete" class="fw-semibold link-dark link-underline link-underline-opacity-0" onclick="deletePost(); return false;" href="javascript:void(0);">삭제</a>
-                            <input type="hidden" id="pri_no" value="${map.get('post').pri_no}">
+                            <a id="deletePost" class="fw-semibold link-dark link-underline link-underline-opacity-0 me-2">삭제</a>
                         </div>
                     </c:if>
                 </div>
@@ -82,9 +88,8 @@
                     <button class="btn btn-secondary">등록</button>
                 </div>
             </div>
+            <div id="popup" class="position-fixed bottom-0 end-0 p-3" style="z-index: 11"></div>
         </div>
-        
-
     </div>
 
     <!-- <jsp:include page="../common/footer.jsp"/> -->

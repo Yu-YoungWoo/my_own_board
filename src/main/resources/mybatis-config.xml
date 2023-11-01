@@ -7,6 +7,6 @@
 		<typeAlias type="com.example.demo.Mybatis.DAO.user" alias="user" />
 		<typeAlias type="com.example.demo.Mybatis.DAO.post" alias="post" />
 
-		<typeAlias type="com.example.demo.DTO.joinForm" alias="joinForm"/>
+		<typeAlias type="com.example.demo.DTO.Request.joinForm" alias="joinForm"/>
 	</typeAliases>
 </configuration>

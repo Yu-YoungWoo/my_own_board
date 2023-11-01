@@ -15,6 +15,9 @@ public class pagenation {
     private int startPage; // 시작 페이지
     private int currentBlock;
 
+    private boolean prev;
+    private boolean next;
+
     public pagenation(int currentPage) {
         this.startPost = (currentPage - 1) * PAGE_SIZE;
         this.currentPage = currentPage;
@@ -31,15 +34,32 @@ public class pagenation {
         }
     }
 
+
     public void setStartPage() {
 
         try {
             this.startPage = (currentBlock - 1) * DISPLAY_PAGENUM + 1;
+
         } catch(NumberFormatException e) {
             this.startPage = 1;
         }
-        
     }
+
+    public void setStartPage(int totalPosts) {
+        try {
+            this.startPage = (currentBlock - 1) * DISPLAY_PAGENUM + 1;
+
+            if(totalPosts < PAGE_SIZE) {
+                this.startPost = 0;
+                this.currentPage = 1;
+                // this.startPage = 1;
+            }
+
+        } catch(NumberFormatException e) {
+            this.startPage = 1;
+        }
+    }
+
 
     public void setEndPage() {
         try {
@@ -51,5 +71,12 @@ public class pagenation {
         } catch(NumberFormatException e) {
             this.endPage = 1;
         }
+    }
+
+    public boolean getPrev() {
+        return this.prev;
+    }
+    public boolean getNext() {
+        return this.next;
     }
 }

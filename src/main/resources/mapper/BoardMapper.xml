@@ -6,17 +6,30 @@
         SELECT count(*) FROM post; 
     </select>
 
+    <select id="countTotalPostWithSearch" resultType="int">
+        SELECT count(*)
+        FROM post
+        <where>
+            <choose>
+                <when test="search_type == 'author_title'">
+                    (author LIKE CONCAT('%', #{query}, '%') OR title LIKE CONCAT('%', #{query}, '%'))
+                </when>
+
+                <when test ="search_type == 'title'">
+                    ${search_type} LIKE CONCAT('%', #{query}, '%')
+                </when>
+                <when test="search_type == 'author'">
+                    ${search_type} LIKE CONCAT('%', #{query}, '%')
+                </when>
+            </choose>
+        </where>
+    </select>
+
     <select id="findAll" resultType="post">
         SELECT pri_no, title, content, author, views, likes, dislikes, create_date 
         FROM post;
     </select>
 
-    <select id="findListWithPaging" resultType="post">
-        SELECT pri_no, title, content, author, views, likes, dislikes, create_date  
-        FROM post 
-        ORDER BY pri_no DESC 
-        LIMIT #{startPost}, 10; 
-    </select>
 
     <select id="findPostWithPostNum" resultType="post">
         SELECT pri_no, title, content, author, views, likes, dislikes, create_date
@@ -30,8 +43,14 @@
         WHERE p.author = #{author} and u.id = #{id} and p.pri_no = #{pri_no};
     </select>
 
+    <select id="findPostsWithPaging" resultType="post">
+        SELECT pri_no, title, content, author, views, likes, dislikes, create_date  
+        FROM post 
+        ORDER BY pri_no DESC 
+        LIMIT #{startPost}, 10; 
+    </select>
 
-    <select id="findPostWithSearchQuery" resultType="post">
+    <select id="findPostWithPagingAndSearchType" resultType="post">
         SELECT pri_no, title, content, author, views, likes, dislikes, create_date 
         FROM post
         <where>
@@ -48,8 +67,12 @@
                 </when>
             </choose>
         </where>
-        ORDER BY create_date desc;
+        ORDER BY pri_no DESC
+        LIMIT #{startPost}, 10;
     </select>
+
+
+    <!-- ########## INSERT ########## -->
 
     <insert id="insertPost" parameterType="post">
         INSERT 
@@ -57,14 +80,39 @@
         VALUES(#{title}, #{content}, #{author}, 0, 0, 0, #{create_date})
     </insert>
 
+
+
+    <!-- ########## UPDATE ########## -->
+
     <update id="updatePostWithPostNum" parameterType="post">
         UPDATE post
         SET title = #{title}, content = #{content}, create_date = #{create_date}
         WHERE pri_no = #{pri_no};
     </update>
+
+    <update id="updatePostInLike" parameterType="int">
+        UPDATE post
+        SET likes = likes + 1
+        WHERE pri_no = #{pri_no}
+    </update>
+
+
+    <update id="updatePostInDisLike" parameterType="int">
+        UPDATE post
+        SET dislikes = dislikes + 1
+        WHERE pri_no = ${pri_no}
+    </update>
+
+    <update id="updatePostView" parameterType="int">
+        UPDATE post
+        SET views = views + 1
+        WHERE pri_no = ${pri_no}
+    </update>
     
+    <!-- ########## DELETE ########## -->
+
     <delete id="deletePostWithPostNum" parameterType="int">
         DELETE FROM post 
-        WHERE pri_no = #{postNum};
+        WHERE pri_no = ${pri_no};
     </delete>
 </mapper>

@@ -33,7 +33,7 @@
                     </tr>
                 </thead>
                 <tbody id="posts">
-                    <c:forEach items="${posts}" var="post" varStatus="status">
+                    <c:forEach items="${map.get('posts')}" var="post" varStatus="status">
                         <tr id="postRow-${status.count}" class="pointer post-row" onclick="window.location.href='/post/${post.pri_no}'">
                             <td class="b-num">${post.pri_no}</td>
                             <td class="b-title">${post.title}</td>
@@ -51,43 +51,52 @@
                 <div class="d-felx flex-column align-items-center mt-4">
                     <ul class="pagination justify-content-center">
 
-                        <c:if test="${prev}">
+                        <!-- <c:if test="${map.get('prev')}">
                             <li class="page-item">
                                 <a class="page-link">&laquo;</a>
                             </li>
-                        </c:if>
+                        </c:if> -->
 
-                        <c:forEach begin="${startPage}" end="${endPage}" var="pageNumber">   
-                            <li class="page-item">
-                                <a class="page-link" href="/?page=${pageNumber}">${pageNumber}</a>
-                            </li>
+                        <c:forEach begin="${map.get('startPage')}" end="${map.get('endPage')}" var="pageNumber">
+                            <c:choose>
+                                <c:when test="${displayPagingNumber}">
+                                    <li class="page-item">
+                                        <a class="page-link" href="/search?page=${pageNumber}&query=${map.get('query')}&search_type=${map.get('search_type')}">${pageNumber}</a>
+                                    </li>
+                                </c:when>
+                                <c:otherwise>
+                                    <li class="page-item">
+                                        <a class="page-link" href="/?page=${pageNumber}">${pageNumber}</a>
+                                    </li>
+                                </c:otherwise>
+                            </c:choose>   
                         </c:forEach>
 
-                        <c:if test="${next}">
+                        <!-- <c:if test="${map.get('next')}">
                             <li class="page-item">
                                 <a class="page-link">&raquo;</a>
                             </li>
-                        </c:if>
+                        </c:if> -->
 
                     </ul>
                 </div>
 
                 <div class="row align-items-center">
                     <div class="col">
-                        <!-- <form id="search-form" method="get" class="form-container search" name="search-form" action="/search"> -->
+                        <form id="search-form" method="get" class="form-container search" name="search-form" action="/search">
                             <div class="d-flex justify-content-center align-items-center" style="width: 500px; min-width: 350px;">
                                 <select id="search_type" class="form-select me-2" name="search_type" style="width: 200px;" aria-label="Default select">
                                     <option selected value="title">제목</option>
                                     <option value="author">글쓴이</option>
                                     <option value="author_title">글쓴이 + 제목</option>
                                 </select>
-                                <input id="search-input" type="text" class="form-control" placeholder="검색" style="display: inline;" name="query"/>
+                                <input id="search-input" type="text" class="form-control" name="query" placeholder="검색" style="display: inline;" value/>
 
                                 <p id="search-btn" class="mb-0 link-secondary" style="cursor: pointer; width: 80px;">
                                     <i class="fas fa-regular fa-magnifying-glass fa-xl"></i>
-                                </p> 
+                                </p>                                                       
                             </div>                            
-                        <!-- </form> -->
+                        </form>
                     </div>
                     <div class="col">
                         <a href="/write" class="link-secondary" style="cursor: pointer;">

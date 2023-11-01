@@ -15,10 +15,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.example.demo.DTO.joinForm;
-import com.example.demo.DTO.loginForm;
-import com.example.demo.DTO.passwordModifyForm;
-import com.example.demo.DTO.basicInfoModifyForm;
+import com.example.demo.DTO.Request.basicInfoModifyForm;
+import com.example.demo.DTO.Request.joinForm;
+import com.example.demo.DTO.Request.loginForm;
+import com.example.demo.DTO.Request.passwordModifyForm;
 import com.example.demo.Mybatis.DAO.user;
 import com.example.demo.Service.UserService;
 

@@ -1,5 +1,4 @@
 $(document).ready(function() {
-
     function formatTimeDifference(timeDiff) {
         const timeUnits = [
             { unit: "일", divisor: 24 * 60 * 60 * 1000 },
@@ -7,17 +6,17 @@ $(document).ready(function() {
             { unit: "분", divisor: 60 * 1000 },
             { unit: "초", divisor: 1000 },
         ];
-
+    
         for(const unitData of timeUnits) {
             const unitDiff = Math.floor(timeDiff / unitData.divisor);
-
+    
             if(unitDiff >= 1) {
                 return unitDiff + unitData.unit + " 전";
             }
         }
         return "방금 전";
     }
-
+    
     function displayUserDeleteFailToast(timeDiff) {
         const toastHTML = `
             <div id="UserDeleteFailToast" class="toast hide fr" role="alert" aria-live="assertive" aria-atomic="true">
@@ -33,13 +32,8 @@ $(document).ready(function() {
             </div>
         `;
     
-        // 동적으로 toast를 추가합니다.
-        $("#popup").append(toastHTML);
-    
-        // toast를 표시합니다.
-        $("#UserDeleteFailToast").toast('show');
+        return toastHTML;
     }
-    
 
     function deleteUser() {
         const id = $("#curId").val();
@@ -48,18 +42,25 @@ $(document).ready(function() {
         $.ajax({
             type: 'POST',
             data: {id : id},
-            url: "http://localhost:8080/deleteUser",
+            url: "http://localhost:8080/deleteUser/",
             success: function() {
                 alert("계정 삭제가 완료되었습니다.");
                 window.location.href = "/login";
             },
             error: function() {
-                const errorTime = new Date();
+                // const errorTime = new Date();
 
-                const timeDiff = Math.floor((currentTime - errorTime) / 1000);
+                // const timeDiff = Math.floor((currentTime - errorTime) / 1000);
                 
-                displayUserDeleteFailToast(timeDiff);
-                return;
+                // let toastHTML = displayUserDeleteFailToast(timeDiff);
+
+                // // 동적으로 toast를 추가합니다.
+                // $("#popup").append(toastHTML);
+            
+                // // toast를 표시합니다.
+                // $("#UserDeleteFailToast").toast('show');
+
+                alert("계정 삭제 실패! 관리자에게 문의하세요.");
             }
         });
     }

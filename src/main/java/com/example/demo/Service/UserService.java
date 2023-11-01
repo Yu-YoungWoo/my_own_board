@@ -11,9 +11,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 
-import com.example.demo.DTO.joinForm;
-import com.example.demo.DTO.passwordModifyForm;
-import com.example.demo.DTO.basicInfoModifyForm;
+import com.example.demo.DTO.Request.basicInfoModifyForm;
+import com.example.demo.DTO.Request.joinForm;
+import com.example.demo.DTO.Request.passwordModifyForm;
 import com.example.demo.Mybatis.DAO.user;
 import com.example.demo.Mybatis.VO.UserRole;
 import com.example.demo.Mybatis.mapper.UserMapper;
@@ -46,12 +46,12 @@ public class UserService {
 
     /**
      * 유저 중복 체크를 위한 count
-     * @param id - User 테이블의 Id
+     * @param pri_no - User 테이블의 Id
      * @return - true or false
      */
-    public String countUserById(String id) {
+    public String countUserById(String pri_no) {
 
-        int findRows = userMapper.countUserById(id);
+        int findRows = userMapper.countUserById(pri_no);
 
         if(findRows == 0) {
             return "true";

@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import com.example.demo.DTO.postModifyForm;
+import com.example.demo.DTO.Request.postModifyForm;
 import com.example.demo.Mybatis.DAO.post;
 import com.example.demo.Mybatis.DAO.user;
 import com.example.demo.Service.BoardService;
@@ -34,16 +34,17 @@ public class BoardController {
     @Autowired private UserService userService;
     
     @GetMapping("/")
-    public String GET_board(@RequestParam(name = "page", defaultValue = "1") String page, Model model, Authentication auth) {
-
-        map = boardService.setPagenation(page);
-
-        model.addAttribute("posts", map.get("posts"));
-        model.addAttribute("totalPage", (int) map.get("totalPage"));
-        model.addAttribute("startPage", (int) map.get("startPage"));
-        model.addAttribute("endPage", (int) map.get("endPage"));
-        // model.addAttribute("prev", map.get("prev"));
-        // model.addAttribute("next", map.get("next"));
+    public String GET_board(
+        @RequestParam(name = "page", required = false) String page,
+        Model model) {
+        
+        if(page == null) {
+            map = boardService.findPostsWithPaging("1");
+        } else {
+            map = boardService.findPostsWithPaging(page);
+        }
+        
+        model.addAttribute("map", map);
 
         return "board";
     
@@ -56,10 +57,10 @@ public class BoardController {
     }
 
     @GetMapping("/post/{postNum}")
-    public String GET_boardDetail(@PathVariable("postNum") String postNum, Model model, Authentication auth) {
+    public String GET_boardDetail(@PathVariable("postNum") String pri_no, Model model, Authentication auth) {
 
         /* 글 정보 조회 */
-        LinkedHashMap<String, Object> map =  boardService.findPostWithPostNum(postNum);
+        LinkedHashMap<String, Object> map =  boardService.findPostWithPostNum(pri_no);
 
         user User = userService.returnUserByAuthentication();
 
@@ -69,12 +70,17 @@ public class BoardController {
     
         post findPost = (post) map.get("post");
 
-        boolean canEditOrDelete = boardService.countPostJoinUser(findPost.getAuthor(), User.getId(), Integer.parseInt(postNum));
+        boolean canEditOrDelete = boardService.countPostJoinUser(findPost.getAuthor(), User.getId(), Integer.parseInt(pri_no));
+        
+        /* 조회 수 증가 시 동시성 문제 있음 
+         * 어떻게 해결 할지 고민해봐야 할 문제...
+         * DB LOCK을 걸건지.. 트렌젝션 제어를 할지.. Java synchronize로 단일 실행을 보장할지..
+         */
+        boardService.updatePostView(pri_no);
 
         model.addAttribute("canEditOrDelete", canEditOrDelete);
         model.addAttribute("map", map);
-    
-        
+
         return "post/post-detail";
     }
     
@@ -128,19 +134,4 @@ public class BoardController {
         
         return "redirect:/post/" + postNum;
     }
-
-    @PostMapping("/post/{postNum}/delete")
-    public String POST_delete(@PathVariable("postNum") String postNum, RedirectAttributes redirectAttributes) {
-
-        System.out.println("postNum : " + postNum);
-        boolean deleteStatus = boardService.deletePostWithPostNum(postNum);
-        
-        // 삭제 실패
-        if(!deleteStatus) {
-            return "redirect:/post/" +postNum+ "delete";
-        }
-
-        return "redirect:/";
-    }
-    
 }
