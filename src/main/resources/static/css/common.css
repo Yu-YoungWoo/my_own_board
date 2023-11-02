@@ -1,0 +1,45 @@
+* { 
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    font-family: "Malgun Gothic", sans-serif;
+    min-height: 100vh;
+}
+
+p {
+    margin: 0px;
+}
+
+td {
+    border-top: 1px solid #eee;
+    vertical-align: middle;
+}
+
+th {
+    height: 45px;
+    border-width: 0 0 1px;
+    border-top: 2px solid gray;
+    vertical-align: middle;
+    text-align: center;
+}
+
+input::placeholder {
+    color: #F0F0F0;
+    font-weight: lighter;
+}
+
+footer {
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+}
+
+
+textarea::placeholder {
+    color: #ccc;
+    font-weight: lighter;
+}

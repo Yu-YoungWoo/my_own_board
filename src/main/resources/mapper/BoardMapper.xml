@@ -2,11 +2,15 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.demo.Mybatis.mapper.BoardMapper">
 
+
+    <!-- ########## SELECT COUNT ########## -->
+
     <select id="countTotalPost" resultType="int">
         SELECT count(*) FROM post; 
     </select>
 
     <select id="countTotalPostWithSearch" resultType="int">
+    <![CDATA[ 
         SELECT count(*)
         FROM post
         <where>
@@ -23,11 +27,24 @@
                 </when>
             </choose>
         </where>
+    ]]>
     </select>
 
+    <select id="countPostJoinUser" resultType="int">
+        SELECT count(*)
+        FROM post p join user u on p.author = u.name
+        WHERE p.author = #{author} and u.id = #{id} and p.pri_no = #{pri_no};
+    </select>
+
+
+
+    <!-- ########## SELECT ########## -->
+
     <select id="findAll" resultType="post">
+    <![CDATA[ 
         SELECT pri_no, title, content, author, views, likes, dislikes, create_date 
         FROM post;
+    ]]>
     </select>
 
 
@@ -35,12 +52,6 @@
         SELECT pri_no, title, content, author, views, likes, dislikes, create_date
         FROM post
         WHERE pri_no = ${postNum};
-    </select>
-
-    <select id="countPostJoinUser" resultType="int">
-        SELECT count(*)
-        FROM post p join user u on p.author = u.name
-        WHERE p.author = #{author} and u.id = #{id} and p.pri_no = #{pri_no};
     </select>
 
     <select id="findPostsWithPaging" resultType="post">
@@ -51,6 +62,7 @@
     </select>
 
     <select id="findPostWithPagingAndSearchType" resultType="post">
+    <![CDATA[ 
         SELECT pri_no, title, content, author, views, likes, dislikes, create_date 
         FROM post
         <where>
@@ -69,6 +81,12 @@
         </where>
         ORDER BY pri_no DESC
         LIMIT #{startPost}, 10;
+    ]]>
+    </select>
+
+    <select id="findAllComment" resultType="comment">
+        SELECT *
+        FROM comment
     </select>
 
 

@@ -57,8 +57,8 @@
             </div>
 
             <!-- 댓글 -->
-            <div class="mt-5">
-                <div class="row" style="border-bottom: 1px solid #eee;">
+            <div class="d-flex flex-column mt-5 comment-font">
+                <div class="d-flex justify-content-between comment-header">
                     <div class="col text-start">
                         <div class="d-flex align-items-center">
                             <span class="me-2 fw-bold">전체 댓글</span>
@@ -72,20 +72,28 @@
                         </div>
                     </c:if>
                 </div>
-                <div class="row mt-4">
-                    <c:choose>
-                        <c:when test=""></c:when>
-                        <c:otherwise>
-                            <p class="text-center">아직 댓글이 없습니다.</p>
-                        </c:otherwise>
-                    </c:choose>
+                <div class="mt-4 m-0">
+                    <div class="comment-row m-0 p-0">
+                        <div class="comment-info">
+                            <div id="author" class="comment-author">
+                                <span>작성자</span>
+                            </div>
+                            <div class="comment-button">
+                                <span class="comment-date">날짜</span>
+                                <span class="comment-delete">삭제</span>
+                            </div>
+                        </div>
+                        <div class="comment-content">
+                            내용
+                        </div>
+                    </div>
                 </div>
-                <div class="row mt-4">
+                <div class="mt-4">
                     <textarea id="comment-Textarea" class="form-control" name="comment" placeholder="타인의 권리를 침해하거나 명예를 훼손하는 댓글은 운영원칙 및 관련 법률에 제재를 받을 수 있습니다."></textarea>
                 </div>
 
-                <div class="row mt-2">
-                    <button class="btn btn-secondary">등록</button>
+                <div class="mt-2">
+                    <button class="btn btn-secondary w-100">등록</button>
                 </div>
             </div>
             <div id="popup" class="position-fixed bottom-0 end-0 p-3" style="z-index: 11"></div>

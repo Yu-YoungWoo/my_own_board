@@ -26,10 +26,6 @@ th {
     text-align: center;
 }
 
-#postRow:hover {
-    background-color: #f2f2f2;
-}
-
 input::placeholder {
     color: #F0F0F0;
     font-weight: lighter;
@@ -45,7 +41,11 @@ footer {
 textarea::placeholder {
     color: #ccc;
     font-weight: lighter;
-  }
+}
+
+#postRow:hover {
+    background-color: #f2f2f2;
+}
 
 #write-Textarea {
     width: 100%;
@@ -59,6 +59,36 @@ textarea::placeholder {
     resize: none;
 }
 
+.comment-font {
+    font-size: 15px;
+}
+
+.comment-header {
+    border-bottom: 1px solid #eee;
+    padding: 0.583rem;
+}
+
+.comment-info {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.583rem;
+    background-color: #F1F1F1;
+    border-radius: 5px;
+}
+
+.comment-content {
+    padding: 0.583rem 1.25rem;
+}
+
+.comment-delete::before {
+    content: "";
+    display: inline-block;
+    width: 1px;
+    height: 12px;
+    background-color: #ccc;
+    margin: 0 8px 0 8px;
+    vertical-align: -2px;
+}
 
 .cursor {
     cursor: pointer;
