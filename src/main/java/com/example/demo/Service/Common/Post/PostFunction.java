@@ -51,6 +51,9 @@ public class PostFunction {
         int totalPosts = 0;
 
         if(query != null && !query.isEmpty()) {
+            System.out.println("page : " + page);
+            System.out.println("query : " + query);
+            System.out.println("search_type : " + search_type);
             totalPosts = boardMapper.countTotalPostWithSearch(query, search_type);
 
             /* 전체 페이지 개수 계산 */

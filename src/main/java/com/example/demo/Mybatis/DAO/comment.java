@@ -7,10 +7,11 @@ import lombok.Data;
 
 @Data
 public class comment {
+
     private int cmt_no;
-    private int post_pri_no;
+    private String cmt_name;
     private String cmt_content;
-    private String author;
+    private int post_pri_no;
     private String create_date;
 
 

@@ -52,6 +52,11 @@ $(document).ready(function() {
         deletePost();
     });
 
+    $("#cmt_btn").click(function(e) {
+        e.preventDefault();
+        insertComment();
+    });
+
 
     function likePost() {
 
@@ -170,6 +175,11 @@ $(document).ready(function() {
                 });
             }
         }
+    }
+
+    function insertComment() {
+        const cmtContent = $("#cmt_content").val();
+        console.log("comment : " + cmtContent);
     }
 
 });

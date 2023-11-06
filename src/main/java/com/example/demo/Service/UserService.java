@@ -5,8 +5,6 @@ import java.util.List;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
@@ -17,6 +15,7 @@ import com.example.demo.DTO.Request.passwordModifyForm;
 import com.example.demo.Mybatis.DAO.user;
 import com.example.demo.Mybatis.VO.UserRole;
 import com.example.demo.Mybatis.mapper.UserMapper;
+import com.example.demo.Service.Common.User.UserFunction;
 
 
 @Service
@@ -27,6 +26,8 @@ public class UserService {
 
     @Autowired
     private PasswordEncoder encoder;
+
+    @Autowired private UserFunction userFunction;
 
     /**
      * 유저의 모든 정보를 가져오는 Mapper
@@ -206,15 +207,13 @@ public class UserService {
         return map;
     }
 
-    public user returnUserByAuthentication() {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+    public boolean validAuthUser() {
+        user authUser = userFunction.returnUserByAuthentication();
 
-        if(auth != null && auth.getName() != null && auth.isAuthenticated()) {
-            String id = auth.getName();
-            user findUser = userMapper.findUserById(id);
-
-            return findUser;
+        if(authUser == null) {
+            return false;
+        } else {
+            return true;
         }
-        return null;
-    }    
+    }
 }

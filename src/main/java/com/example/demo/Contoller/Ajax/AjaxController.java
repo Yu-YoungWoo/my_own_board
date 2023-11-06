@@ -17,10 +17,7 @@ import com.example.demo.DTO.Response.post.ajax.postLikeRep;
 import com.example.demo.Service.BoardService;
 import com.example.demo.Service.UserService;
 
-import lombok.extern.slf4j.Slf4j;
-
 @Controller
-@Slf4j
 public class AjaxController {
 
     @Autowired
@@ -85,10 +82,7 @@ public class AjaxController {
                              @RequestParam(required = false) String search_type,
                              @RequestParam(defaultValue = "1", required = false) String page,
                              Model model) {
-        
-        log.info("page : " + page);
-        log.info("query : " + query);
-        log.info("search_type : " + search_type);
+
 
         if(page == null) {
             map = boardService.findPostWithPagingAndSearchType("1", query, search_type);   

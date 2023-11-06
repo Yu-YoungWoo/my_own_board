@@ -1,6 +1,7 @@
 package com.example.demo.Contoller;
 
 import java.util.LinkedHashMap;
+import java.util.List;
 
 import javax.validation.Valid;
 
@@ -14,9 +15,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import com.example.demo.DTO.Request.postModifyForm;
+import com.example.demo.Mybatis.DAO.comment;
 import com.example.demo.Mybatis.DAO.post;
-import com.example.demo.Mybatis.DAO.user;
 import com.example.demo.Service.BoardService;
+import com.example.demo.Service.CommentService;
 import com.example.demo.Service.UserService;
 
 import org.springframework.web.bind.annotation.RequestParam;
@@ -28,16 +30,19 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @Controller
 public class BoardController {
 
-    LinkedHashMap<String, Object> map = new LinkedHashMap<String, Object>();
-
     @Autowired private BoardService boardService;
     @Autowired private UserService userService;
+    @Autowired private CommentService commentService;
+    
     
     @GetMapping("/")
-    public String GET_board(
-        @RequestParam(name = "page", required = false) String page,
-        Model model) {
+    public String GET_board( @RequestParam(name = "page", required = false) String page, Model model, Authentication auth) {
+        LinkedHashMap<String, Object> map = new LinkedHashMap<String, Object>();
+
+        // SecurityContextHolder의 유저 권한을 통해 로그인 확인
+        model.addAttribute("isAuthenticated", userService.validAuthUser());
         
+
         if(page == null) {
             map = boardService.findPostsWithPaging("1");
         } else {
@@ -47,7 +52,6 @@ public class BoardController {
         model.addAttribute("map", map);
 
         return "board";
-    
     }
 
     @PostMapping("/")
@@ -57,20 +61,23 @@ public class BoardController {
     }
 
     @GetMapping("/post/{postNum}")
-    public String GET_boardDetail(@PathVariable("postNum") String pri_no, Model model, Authentication auth) {
+    public String GET_boardDetail(@PathVariable("postNum") String pri_no, Model model) {
+        LinkedHashMap<String, Object> map = new LinkedHashMap<String, Object>();
 
         /* 글 정보 조회 */
-        LinkedHashMap<String, Object> map =  boardService.findPostWithPostNum(pri_no);
+        map =  boardService.findPostWithPostNum(pri_no);
+        boolean canEditOrDelete = false;
 
-        user User = userService.returnUserByAuthentication();
+        /* 댓글 정보 조회 */
+        List<comment> comments = commentService.findAllCommentBypostId(Integer.parseInt(pri_no));
+        map.put("comments", comments);
+        
+        /* 댓글 개수 count */
+        map.put("cmtCount", Integer.valueOf(comments.size()));
 
-        if(User == null) {
-            return "redirect:/login";
-        }
-    
         post findPost = (post) map.get("post");
-
-        boolean canEditOrDelete = boardService.countPostJoinUser(findPost.getAuthor(), User.getId(), Integer.parseInt(pri_no));
+        
+        canEditOrDelete = boardService.countPostJoinUser(findPost.getAuthor(), Integer.parseInt(pri_no));
         
         /* 조회 수 증가 시 동시성 문제 있음 
          * 어떻게 해결 할지 고민해봐야 할 문제...
@@ -88,13 +95,14 @@ public class BoardController {
     @GetMapping("/write")
     public String GET_write(Model model, Authentication auth) {
         
-        user User = userService.returnUserByAuthentication();
-
-        if(User == null) {
+        boolean authStatus = userService.validAuthUser();
+        
+        // 유저 권한이 없으면 로그인 페이지로 리다이렉트
+        if(!authStatus) {
             return "redirect:/login";
         }
 
-        model.addAttribute("user_name", userService.findUserById(User.getId()).getName());
+        model.addAttribute("user_name", userService.findUserById(auth.getName()).getName());
 
         return "post/write";
     }
@@ -102,13 +110,20 @@ public class BoardController {
     @PostMapping("/write")
     public String POST_write(@RequestParam("title") String title, @RequestParam("content") String content, @RequestParam("name") String name) {
         
-         boardService.insertPost(title, content, name);
+        boardService.insertPost(title, content, name);
         
         return "redirect:/";
     }
 
     @GetMapping("/post/{postNum}/modify")
     public String GET_modify(@PathVariable("postNum") String postNum, Model model) {
+
+        boolean authStatus = userService.validAuthUser();
+        
+        // 유저 권한이 없으면 로그인 페이지로 리다이렉트
+        if(!authStatus) {
+            return "redirect:/login";
+        }
 
         LinkedHashMap<String, Object> map = boardService.findPostWithPostNum(postNum);
 

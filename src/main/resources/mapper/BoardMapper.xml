@@ -10,60 +10,54 @@
     </select>
 
     <select id="countTotalPostWithSearch" resultType="int">
-    <![CDATA[ 
         SELECT count(*)
         FROM post
         <where>
             <choose>
-                <when test="search_type == 'author_title'">
-                    (author LIKE CONCAT('%', #{query}, '%') OR title LIKE CONCAT('%', #{query}, '%'))
+                <when test="search_type == 'author_title'">                    
+                    author LIKE CONCAT('%', #{query}, '%') OR title LIKE CONCAT('%', #{query}, '%')
                 </when>
-
-                <when test ="search_type == 'title'">
-                    ${search_type} LIKE CONCAT('%', #{query}, '%')
-                </when>
+                <when test="search_type == 'title'">
+                    title LIKE CONCAT('%', #{query}, '%')
+                </when>                
                 <when test="search_type == 'author'">
-                    ${search_type} LIKE CONCAT('%', #{query}, '%')
+                    author LIKE CONCAT('%', #{query}, '%')
                 </when>
             </choose>
         </where>
-    ]]>
     </select>
 
     <select id="countPostJoinUser" resultType="int">
         SELECT count(*)
         FROM post p join user u on p.author = u.name
-        WHERE p.author = #{author} and u.id = #{id} and p.pri_no = #{pri_no};
+        WHERE p.author = #{author} and p.pri_no = #{pri_no};
     </select>
-
-
 
     <!-- ########## SELECT ########## -->
 
     <select id="findAll" resultType="post">
     <![CDATA[ 
-        SELECT pri_no, title, content, author, views, likes, dislikes, create_date 
+        SELECT *
         FROM post;
     ]]>
     </select>
 
 
     <select id="findPostWithPostNum" resultType="post">
-        SELECT pri_no, title, content, author, views, likes, dislikes, create_date
+        SELECT *
         FROM post
         WHERE pri_no = ${postNum};
     </select>
 
     <select id="findPostsWithPaging" resultType="post">
-        SELECT pri_no, title, content, author, views, likes, dislikes, create_date  
+        SELECT *
         FROM post 
         ORDER BY pri_no DESC 
         LIMIT #{startPost}, 10; 
     </select>
 
     <select id="findPostWithPagingAndSearchType" resultType="post">
-    <![CDATA[ 
-        SELECT pri_no, title, content, author, views, likes, dislikes, create_date 
+        SELECT *
         FROM post
         <where>
             <choose>
@@ -81,15 +75,8 @@
         </where>
         ORDER BY pri_no DESC
         LIMIT #{startPost}, 10;
-    ]]>
     </select>
-
-    <select id="findAllComment" resultType="comment">
-        SELECT *
-        FROM comment
-    </select>
-
-
+    
     <!-- ########## INSERT ########## -->
 
     <insert id="insertPost" parameterType="post">

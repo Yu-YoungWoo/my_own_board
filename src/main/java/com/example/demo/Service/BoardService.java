@@ -26,16 +26,13 @@ public class BoardService {
     @Autowired private BoardMapper boardMapper;
     @Autowired private PostFunction postFunction;
 
-    LinkedHashMap<String, Object> map = null;
-
     /**
      * 게시판 초기 상태의 페이징 설정을 위한 메소드
      * @param page - 현제 페이지
      * @return LinkedHashMap<String, Object> -- (DTO로 수정 필요)
      */
      public LinkedHashMap<String, Object> findPostsWithPaging(String page) {
-
-        map = new LinkedHashMap<String, Object>();
+        LinkedHashMap<String, Object> map = new LinkedHashMap<>();
 
         log.info("pagenation 객체-----------------------------");
         pagenation pagenation = postFunction.rtnPagenation(page);
@@ -58,9 +55,10 @@ public class BoardService {
     }
 
     public LinkedHashMap<String, Object> findPostWithPagingAndSearchType(String page, String query, String search_type) {
-        map = new LinkedHashMap<String, Object>();
+        LinkedHashMap<String, Object> map = new LinkedHashMap<String, Object>();
 
         log.info("검색 쿼리 + pagenation 객체---------------");
+
         pagenation pagenation = postFunction.rtnPagenation(page, query, search_type);
 
         log.info("검색 쿼리 + 게시글 찾는 페이징-----------------------------");
@@ -88,24 +86,27 @@ public class BoardService {
         return map;
     }
 
-    public LinkedHashMap<String, Object> findPostWithPostNum(String postNum) {
-        LinkedHashMap<String, Object> map = new LinkedHashMap<>();
+    public LinkedHashMap<String, Object> findPostWithPostNum(String pro_no) {
+        LinkedHashMap<String, Object> map = new LinkedHashMap<String, Object>();
+        
+        map = new LinkedHashMap<>();
 
-        post findPost = boardMapper.findPostWithPostNum(postNum);
-
-        findPost.setContent(findPost.getContent().replace("\r\n", "<br>"));
+        post findPost = boardMapper.findPostWithPostNum(pro_no);
 
         map.put("post", findPost);
-
-        return map;
+        
+        return map;        
     }
 
 
     /* ----------------- INSERT ----------------- */
     
     public void insertPost(String title, String content, String name) {
-        
+
         post newPost = new post();
+
+        content = content.replace("\r\n", "<br>");
+
         newPost.setTitle(title);
         newPost.setContent(content);
         newPost.setAuthor(name);
@@ -194,9 +195,9 @@ public class BoardService {
      * @return true OR false
      */
 
-    public boolean countPostJoinUser(String author, String id, int postNum) {
+    public boolean countPostJoinUser(String author, int postNum) {
 
-        int selectRows = boardMapper.countPostJoinUser(author, id, postNum);
+        int selectRows = boardMapper.countPostJoinUser(author, postNum);
 
         if(selectRows > 0) {
             return true;

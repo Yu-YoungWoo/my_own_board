@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
-
 import com.example.demo.Mybatis.DAO.post;
 
 @Mapper
@@ -12,6 +11,7 @@ public interface BoardMapper {
 
     public int countTotalPost();
 
+    // 검색 query + search_type
     public int countTotalPostWithSearch(String query, String search_type);
 
     public List<post> findAll();
@@ -25,7 +25,7 @@ public interface BoardMapper {
     public post findPostWithPostNum(String postNum);
 
     // 유저 이름, 페이지 번호로 게시글 찾기
-    public int countPostJoinUser(String author, String id, int pri_no);
+    public int countPostJoinUser(String author, int pri_no);
 
     // 글 등록
     public void insertPost(post post);

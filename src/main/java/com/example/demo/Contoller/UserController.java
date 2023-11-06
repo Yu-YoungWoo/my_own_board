@@ -86,14 +86,17 @@ public class UserController {
 
 
     @GetMapping("/user-detail")
-    public String GET_userDetail(Model model) {
+    public String GET_userDetail(Model model, Authentication auth) {
 
-        user findUser = userService.returnUserByAuthentication();
-
-        if(findUser == null) {
+        boolean authStatus = userService.validAuthUser();
+        
+        // 유저 권한이 없으면 로그인 페이지로 리다이렉트
+        if(!authStatus) {
             return "redirect:/login";
         }
-    
+
+        user findUser = userService.findUserById(auth.getName());
+
         model.addAttribute("user", findUser);
         
         return "user/user_detail";
@@ -118,25 +121,28 @@ public class UserController {
      * @return - 결과에 따른 페이지 String 값 
      */
     @PostMapping("/basic-info-modify")
-    public String POST_userModify(@Valid basicInfoModifyForm form, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model) {
+    public String POST_userModify(@Valid basicInfoModifyForm form, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model, Authentication auth) {
 
         LinkedHashMap<String, Object> map = new LinkedHashMap<>();
         
-        user User = userService.returnUserByAuthentication();
-
-        if(User == null) {
+        boolean authStatus = userService.validAuthUser();
+        
+        // 유저 권한이 없으면 로그인 페이지로 리다이렉트
+        if(!authStatus) {
             return "redirect:/login";
         }
 
+        user findUser = userService.findUserById(auth.getName());
+
         if(bindingResult.hasErrors()) {
             System.out.println("bindingResult : " + bindingResult);
-            map = userService.createFailMsg(bindingResult, User.getId(),"BASIC-INFO-MODIFY");
+            map = userService.createFailMsg(bindingResult, findUser.getId(),"BASIC-INFO-MODIFY");
             redirectAttributes.addFlashAttribute("map", map);
             
             return "redirect:/user-detail";
         }
 
-        map = userService.updateBasicInfo(form, User.getId());
+        map = userService.updateBasicInfo(form, findUser.getId());
 
         if(map.containsKey("updateUserFailStatus")) {
             redirectAttributes.addFlashAttribute("map", map);
@@ -150,9 +156,10 @@ public class UserController {
     @GetMapping("/user-password-modify")
     public String GET_userPasswordModify(Model model, Authentication auth) {
 
-        user findUser = userService.returnUserByAuthentication();
-
-        if(findUser == null) {
+        boolean authStatus = userService.validAuthUser();
+        
+        // 유저 권한이 없으면 로그인 페이지로 리다이렉트
+        if(!authStatus) {
             return "redirect:/login";
         }
     
@@ -164,11 +171,14 @@ public class UserController {
     @PostMapping("/user-password-modify")
     public String POST_userPasswordModify(@Valid passwordModifyForm form, BindingResult bindingResult, RedirectAttributes redirectAttributes, Authentication auth) {
         LinkedHashMap<String, Object> passwordModifyMap = new LinkedHashMap<>();
-        user findUser = userService.returnUserByAuthentication();
+        boolean authStatus = userService.validAuthUser();
         
-        if(findUser == null) {
+        // 유저 권한이 없으면 로그인 페이지로 리다이렉트
+        if(!authStatus) {
             return "redirect:/login";
         }
+
+        user findUser = userService.findUserById(auth.getName());
 
         if(bindingResult.hasErrors()) {
             String fieldErrorName = "";

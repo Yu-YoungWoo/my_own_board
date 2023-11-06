@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.Mybatis.mapper.CommentMapper">
+
+    <!-- ########## SELECT COUNT ########## -->
+
+    <select id="countCommentBypostId" resultType="int">
+        SELECT count(*)
+        FROM comment
+        WHERE post_pri_no = #{post_pri_no}
+    </select>
+
+
+    <!-- ########## SELECT ########## -->
+
+    <select id="findAllComment" resultType="comment">
+        SELECT *
+        FROM comment
+    </select>
+
+    <select id="findAllCommentBypostId" resultType="comment">
+        SELECT *
+        FROM comment
+        WHERE post_pri_no = #{post_pri_no}
+    </select>
+
+    <!-- ########## INSERT ########## -->
+    <insert id="insertComment" parameterType="comment">
+        INSERT
+        INTO comment(cmt_name, cmt_content, create_date, post_pri_no)
+        VALUES(#{cmt_name}, #{cmt_content}, #{create_date}, #{post_pri_no})
+    </insert>
+
+</mapper>
