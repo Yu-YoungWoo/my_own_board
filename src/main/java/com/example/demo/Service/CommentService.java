@@ -5,6 +5,7 @@ import java.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.demo.DTO.Response.post.ajax.commentRep;
 import com.example.demo.Mybatis.DAO.comment;
 import com.example.demo.Mybatis.mapper.CommentMapper;
 
@@ -25,17 +26,28 @@ public class CommentService {
         return findRows;
     }
 
-    public int insertComment(String content, String cmt_name) {
+    public commentRep insertComment(String comment, String cmt_name, int pri_no) {
         comment newComment = new comment();
+        commentRep newCommentRep = new commentRep();
 
-        content = content.replace("\r\n", "<br>");
+        comment = comment.replace("\r\n", "<br>");
 
         newComment.setCmt_name(cmt_name);
-        newComment.setCmt_content(content);
+        newComment.setCmt_content(comment);
+        newComment.setPost_pri_no(pri_no);
 
         int insertRows = commentMapper.insertComment(newComment);
 
-        return insertRows;
+        if(insertRows == 0) {
+            newCommentRep.setCmt_status(false);
+        } else {
+            newCommentRep.setCmt_name(cmt_name);
+            newCommentRep.setCmt_content(comment);
+            newCommentRep.setCreate_date(newComment.getCreate_date());
+            newCommentRep.setCmt_status(true);
+        }
+
+        return newCommentRep;
     }
     
 }

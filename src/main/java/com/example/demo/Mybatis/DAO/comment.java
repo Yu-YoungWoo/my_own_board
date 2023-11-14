@@ -9,9 +9,13 @@ import lombok.Data;
 public class comment {
 
     private int cmt_no;
+    // 작성자
     private String cmt_name;
+    // 댓글
     private String cmt_content;
+    // 해당 게시글 번호
     private int post_pri_no;
+    // 생성 날짜
     private String create_date;
 
 

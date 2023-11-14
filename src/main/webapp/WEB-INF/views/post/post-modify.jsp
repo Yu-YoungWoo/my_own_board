@@ -44,7 +44,7 @@
                             <a href="/post/${map.get('post').pri_no}"><button type="button" class="btn btn-secondary write-submit-btn">취소</button></a>
                         </div>
                         <div class="col">
-                            <button id="modify-btn" type="button" class="btn btn-primary form-button-color write-submit-btn">등록</button>
+                            <button id="modify-btn" type="submit" class="btn btn-primary form-button-color write-submit-btn">등록</button>
                         </div>
                     </div>
                 </div>

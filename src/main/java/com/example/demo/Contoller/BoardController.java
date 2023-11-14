@@ -14,9 +14,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import com.example.demo.DTO.Request.postModifyForm;
+import com.example.demo.DTO.Response.post.postModifyRep;
 import com.example.demo.Mybatis.DAO.comment;
 import com.example.demo.Mybatis.DAO.post;
+import com.example.demo.Mybatis.DAO.user;
 import com.example.demo.Service.BoardService;
 import com.example.demo.Service.CommentService;
 import com.example.demo.Service.UserService;
@@ -61,8 +62,19 @@ public class BoardController {
     }
 
     @GetMapping("/post/{postNum}")
-    public String GET_boardDetail(@PathVariable("postNum") String pri_no, Model model) {
+    public String GET_boardDetail(@PathVariable("postNum") String pri_no, Model model, Authentication auth) {
         LinkedHashMap<String, Object> map = new LinkedHashMap<String, Object>();
+        
+        // SecurityContextHolder의 유저 권한을 통해 로그인 확인
+        model.addAttribute("isAuthenticated", userService.validAuthUser());
+    
+        System.out.println("auth : " + auth);
+        // 유저 정보 조회 (댓글)
+        if(auth != null) {
+            user findUser = userService.findUserById(auth.getName());
+            System.out.println("findUser.getName() : " + findUser.getName());
+            map.put("name", findUser.getName());
+        }
 
         /* 글 정보 조회 */
         map =  boardService.findPostWithPostNum(pri_no);
@@ -74,12 +86,14 @@ public class BoardController {
         
         /* 댓글 개수 count */
         map.put("cmtCount", Integer.valueOf(comments.size()));
-
-        post findPost = (post) map.get("post");
         
-        canEditOrDelete = boardService.countPostJoinUser(findPost.getAuthor(), Integer.parseInt(pri_no));
+        // user id 정보 조회 (글 수정, 삭제 가능 여부 판단)
+        String id = (auth == null) ? "" : auth.getName();
         
-        /* 조회 수 증가 시 동시성 문제 있음 
+        canEditOrDelete = boardService.countPostJoinUser(id , Integer.parseInt(pri_no));
+        
+        /* 
+         * 조회 수 증가 시 동시성 문제 있음 
          * 어떻게 해결 할지 고민해봐야 할 문제...
          * DB LOCK을 걸건지.. 트렌젝션 제어를 할지.. Java synchronize로 단일 실행을 보장할지..
          */
@@ -95,6 +109,9 @@ public class BoardController {
     @GetMapping("/write")
     public String GET_write(Model model, Authentication auth) {
         
+        // SecurityContextHolder의 유저 권한을 통해 로그인 확인
+        model.addAttribute("isAuthenticated", userService.validAuthUser());
+
         boolean authStatus = userService.validAuthUser();
         
         // 유저 권한이 없으면 로그인 페이지로 리다이렉트
@@ -116,7 +133,10 @@ public class BoardController {
     }
 
     @GetMapping("/post/{postNum}/modify")
-    public String GET_modify(@PathVariable("postNum") String postNum, Model model) {
+    public String GET_modify(@PathVariable("postNum") String postNum, Model model, Authentication auth) {
+
+        // SecurityContextHolder의 유저 권한을 통해 로그인 확인
+        model.addAttribute("isAuthenticated", userService.validAuthUser());
 
         boolean authStatus = userService.validAuthUser();
         
@@ -134,7 +154,7 @@ public class BoardController {
 
 
     @PostMapping("/post/{postNum}/modify")
-    public String POST_modify(@Valid postModifyForm form, BindingResult bindingResult, @PathVariable("postNum") String postNum, RedirectAttributes redirectAttributes) {
+    public String POST_modify(@Valid postModifyRep form, BindingResult bindingResult, @PathVariable("postNum") String postNum, RedirectAttributes redirectAttributes) {
 
         if(bindingResult.hasErrors()) {
             return "redirect:/post/"+postNum+"/modify";

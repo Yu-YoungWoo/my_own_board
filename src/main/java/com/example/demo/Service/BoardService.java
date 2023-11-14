@@ -9,7 +9,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.demo.DTO.Request.postModifyForm;
+import com.example.demo.DTO.Response.post.postModifyRep;
 import com.example.demo.DTO.Response.post.ajax.postDisLikeRep;
 import com.example.demo.DTO.Response.post.ajax.postLikeRep;
 import com.example.demo.Mybatis.DAO.pagenation;
@@ -86,12 +86,14 @@ public class BoardService {
         return map;
     }
 
-    public LinkedHashMap<String, Object> findPostWithPostNum(String pro_no) {
+    public LinkedHashMap<String, Object> findPostWithPostNum(String pri_no) {
         LinkedHashMap<String, Object> map = new LinkedHashMap<String, Object>();
         
         map = new LinkedHashMap<>();
 
-        post findPost = boardMapper.findPostWithPostNum(pro_no);
+        post findPost = boardMapper.findPostWithPostNum(pri_no);
+
+        findPost.setContent(findPost.getContent().replace("<br>", "\r\n"));
 
         map.put("post", findPost);
         
@@ -117,18 +119,14 @@ public class BoardService {
 
     /* ----------------- UPDATE ----------------- */
     
-    public boolean updatePostWithPostNum(postModifyForm form, String postNum) {
+    public boolean updatePostWithPostNum(postModifyRep form, String postNum) {
         ModelMapper modelMapper = new ModelMapper();
 
-        Date now = new Date();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-        String formattedDate = dateFormat.format(now);
 
         post findPost = boardMapper.findPostWithPostNum(postNum);
 
-
+        findPost.setContent(form.getTitle().replace("\r\n", "<br>"));
         modelMapper.map(form, findPost);
-        findPost.setCreate_date(formattedDate);
         
         int updateRows = boardMapper.updatePostWithPostNum(findPost);
 
@@ -195,9 +193,13 @@ public class BoardService {
      * @return true OR false
      */
 
-    public boolean countPostJoinUser(String author, int postNum) {
+    public boolean countPostJoinUser(String id, int postNum) {
 
-        int selectRows = boardMapper.countPostJoinUser(author, postNum);
+        if(id == null) {
+            id = "";
+        }
+
+        int selectRows = boardMapper.countPostJoinUser(id, postNum);
 
         if(selectRows > 0) {
             return true;

@@ -22,8 +22,11 @@ import com.example.demo.DTO.Request.passwordModifyForm;
 import com.example.demo.Mybatis.DAO.user;
 import com.example.demo.Service.UserService;
 
+import lombok.extern.log4j.Log4j2;
+
 
 @Controller
+@Log4j2
 public class UserController {
 
     @Autowired
@@ -88,8 +91,7 @@ public class UserController {
     @GetMapping("/user-detail")
     public String GET_userDetail(Model model, Authentication auth) {
 
-        boolean authStatus = userService.validAuthUser();
-        
+        boolean authStatus = userService.validAuthUser();        
         // 유저 권한이 없으면 로그인 페이지로 리다이렉트
         if(!authStatus) {
             return "redirect:/login";
@@ -97,6 +99,7 @@ public class UserController {
 
         user findUser = userService.findUserById(auth.getName());
 
+        model.addAttribute("isAuthenticated", authStatus);
         model.addAttribute("user", findUser);
         
         return "user/user_detail";
@@ -132,6 +135,8 @@ public class UserController {
             return "redirect:/login";
         }
 
+        log.info("form Email : " + form.getEmail());
+
         user findUser = userService.findUserById(auth.getName());
 
         if(bindingResult.hasErrors()) {
@@ -149,7 +154,6 @@ public class UserController {
             return "redirect:/user-detail";
         }
         
-        
         return "redirect:/user-detail";
     }
 
@@ -163,8 +167,7 @@ public class UserController {
             return "redirect:/login";
         }
     
-        // model.addAttribute("user", findUser);
-
+        model.addAttribute("isAuthenticated", authStatus);
         return "user/user_password_modify";
     }
 

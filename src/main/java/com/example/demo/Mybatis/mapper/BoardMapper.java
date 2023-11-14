@@ -25,7 +25,7 @@ public interface BoardMapper {
     public post findPostWithPostNum(String postNum);
 
     // 유저 이름, 페이지 번호로 게시글 찾기
-    public int countPostJoinUser(String author, int pri_no);
+    public int countPostJoinUser(String id, int pri_no);
 
     // 글 등록
     public void insertPost(post post);

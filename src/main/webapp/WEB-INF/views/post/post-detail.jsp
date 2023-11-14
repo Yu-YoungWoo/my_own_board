@@ -15,7 +15,8 @@
 
         <!-- Post Detail -->
         <div class="shadow rounded-4 p-4 bg-white panel">
-            <input type="hidden" id="pri_no" value="${map.get('post').pri_no}">
+            <input type="hidden" id="pri_no" value="${map.get('post').pri_no}" />
+            <input type="hidden" id="name" value="${map.get('name')}" />
             <!-- 헤더 -->
             <div class="row text-start pb-3" style="border-bottom: 1px solid #eee;">
                 <h3>${map.get("post").title}</h3>
@@ -42,7 +43,7 @@
             <!-- 내용 -->
             <div class="row mt-5">
                 <div class="col">
-                    <p>${map.get("post").content}</p>
+                    ${map.get("post").content}
                 </div>
             </div>
 
@@ -68,12 +69,12 @@
                     <c:if test="${canEditOrDelete}">
                         <div class="col text-end">
                             <a id="PostModify" class="fw-semibold link-dark link-underline link-underline-opacity-0 me-2" href="/post/${map.get('post').pri_no}/modify">수정</a>
-                            <a id="deletePost" class="fw-semibold link-dark link-underline link-underline-opacity-0 me-2">삭제</a>
+                            <a id="deletePost" class="fw-semibold link-dark link-underline link-underline-opacity-0 me-2 cursor">삭제</a>
                         </div>
                     </c:if>
                 </div>
                 
-                <ul class="p-0 cmt-list">
+                <ul id="cmt_list" class="p-0 cmt-list">
                     <c:choose>
                         <c:when test="${map.get('cmtCount') != 0}">
                             <c:forEach items="${map.get('comments')}" var="comment">
@@ -101,17 +102,19 @@
                         </c:when>
                         
                         <c:otherwise>
-                            <p class="text-center pt-4"> 아직 댓글이 없습니다.</p>
+                            <p id="no_cmt" class="text-center pt-4"> 아직 댓글이 없습니다.</p>
                         </c:otherwise>
                     </c:choose>
                 </ul>
-                <div class="mt-4">
-                    <textarea id="cmt_content" class="form-control" name="comment" placeholder="타인의 권리를 침해하거나 명예를 훼손하는 댓글은 운영원칙 및 관련 법률에 제재를 받을 수 있습니다."></textarea>
-                </div>
-
-                <div class="mt-2">
-                    <button id="cmt_btn" class="btn btn-secondary w-100">등록</button>
-                </div>
+                <c:if test="${isAuthenticated}">
+                    <div class="mt-4">
+                        <textarea id="cmt_content" class="form-control" name="comment" placeholder="타인의 권리를 침해하거나 명예를 훼손하는 댓글은 운영원칙 및 관련 법률에 제재를 받을 수 있습니다."></textarea>
+                    </div>
+    
+                    <div class="mt-2">
+                        <button id="cmt_btn" class="btn btn-secondary w-100">등록</button>
+                    </div>
+                </c:if>
             </div>
             <div id="popup" class="position-fixed bottom-0 end-0 p-3" style="z-index: 11"></div>
         </div>

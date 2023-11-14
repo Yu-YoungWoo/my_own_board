@@ -30,7 +30,7 @@
     <select id="countPostJoinUser" resultType="int">
         SELECT count(*)
         FROM post p join user u on p.author = u.name
-        WHERE p.author = #{author} and p.pri_no = #{pri_no};
+        WHERE u.id = #{id} and p.pri_no = #{pri_no};
     </select>
 
     <!-- ########## SELECT ########## -->

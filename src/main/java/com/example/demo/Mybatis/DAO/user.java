@@ -22,7 +22,7 @@ public class user {
 
     public void setCreateDate() {
         Date now = new Date();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         String formattedDate = dateFormat.format(now);
         try {
             this.create_date = formattedDate;

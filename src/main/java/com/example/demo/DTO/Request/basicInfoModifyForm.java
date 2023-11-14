@@ -22,6 +22,6 @@ public class basicInfoModifyForm {
     private String tel;
 
     @NotBlank(message = "이메일은 필수입니다.")
-    @Pattern(regexp = "[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,}", message = "올바른 이메일 형식을 입력해주세요.")
+    @Pattern(regexp = "[A-Za-z0-9]+@[A-Za-z0-9.]+\\.[A-Za-z]{2,}", message = "올바른 이메일 형식을 입력해주세요.")
     private String email;
 }

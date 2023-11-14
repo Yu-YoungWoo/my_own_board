@@ -32,7 +32,7 @@
                         <div class="mb-4"> 
                             <label for="id">변경할 아이디</label>
                             <div class="d-flex justify-content-start">
-                                <input id="id" type="text" class="form-control" placeholder="4~20자/영문,숫자만 허용" name="id" value="" required/>
+                                <input id="id" name="id" type="text" class="form-control" placeholder="4~20자/영문,숫자만 허용" value="" required/>
                                 <button type="button" id="checkDupId" class="btn btn-outline-secondary ms-2">중복 확인</button>
                             </div>                            
                             <div id="invalidIdMsg" class="invalid-feedback ms-1">4~20자 / 영문, 숫자만 허용합니다.</div>
@@ -44,7 +44,7 @@
                         <div class="mb-4">
                             <label for="name">닉네임</label>
                             <div class="d-flex justify-content-start">
-                                <input id="name" type="text" class="form-control" placeholder="2자 이상 16자 이하, 영어 또는 숫자 또는 한글 조합" name="name" value="${user.name}" required/>
+                                <input id="name" name="name" type="text" class="form-control" placeholder="2자 이상 16자 이하, 영어 또는 숫자 또는 한글 조합" value="${user.name}" required/>
                                 <button type="button" id="checkDupName" class="btn btn-outline-secondary ms-2">중복 확인</button>
                             </div>
                             <div id="invalidNameEmptyMsg" class="invalid-feedback ms-1">공백은 허용하지 않습니다.</div>
@@ -54,14 +54,14 @@
 
                         <div class="mb-4">
                             <label for="tel">전화번호</label>
-                            <input id="tel" type="text" class="form-control" placeholder="'-' 제외한 숫자만 입력" name="tel" value="${user.tel}" required/>
+                            <input id="tel" name="tel" type="text" class="form-control" placeholder="'-' 제외한 숫자만 입력" value="${user.tel}" required/>
                                                         
                             <div id="invalidTelMsg" class="invalid-feedback ms-1">'-'를 제외한 숫자만 허용합니다.</div>    
                         </div>
 
                         <div class="mb-4">
                             <label for="email">이메일</label>
-                            <input id="email" type="text" class="form-control" placeholder="이메일은 example@example.com 형식만 허용" name="email" value="${user.email}" required/>
+                            <input id="email" name="email" type="text" class="form-control" placeholder="이메일은 example@example.com 형식만 허용" value="${user.email}" required/>
                                 
                             <div id="invalidEmailMsg" class="invalid-feedback ms-1">이메일은 example@example.com 같이 형식에 맞게 입력해야 합니다.</div>   
                         </div>

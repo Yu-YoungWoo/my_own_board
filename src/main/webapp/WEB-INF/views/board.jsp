@@ -34,7 +34,7 @@
                 </thead>
                 <tbody id="posts">
                     <c:forEach items="${map.get('posts')}" var="post" varStatus="status">
-                        <tr id="postRow-${status.count}" class="pointer post-row" onclick="window.location.href='/post/${post.pri_no}'">
+                        <tr id="post-${post.pri_no}" class="pointer post-row" onclick="window.location.href='/post/${post.pri_no}'">
                             <td class="b-num">${post.pri_no}</td>
                             <td class="b-title">${post.title}</td>
                             <td class="b-auth">${post.author}</td>

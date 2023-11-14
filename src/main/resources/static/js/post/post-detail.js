@@ -1,39 +1,31 @@
 $(document).ready(function() {
 
-    function formatTimeDifference(timeDiff) {
-        const timeUnits = [
-            { unit: "일", divisor: 24 * 60 * 60 * 1000 },
-            { unit: "시간", divisor: 60 * 60 * 1000 },
-            { unit: "분", divisor: 60 * 1000 },
-            { unit: "초", divisor: 1000 },
-        ];
-    
-        for(const unitData of timeUnits) {
-            const unitDiff = Math.floor(timeDiff / unitData.divisor);
-    
-            if(unitDiff >= 1) {
-                return unitDiff + unitData.unit + " 전";
-            }
-        }
-        return "방금 전";
-    }
-
-    function displayUserDeleteFailToast(timeDiff) {
-        const toastHTML = `
-            <div id="UserDeleteFailToast" class="toast hide fr" role="alert" aria-live="assertive" aria-atomic="true">
-                <div class="toast-header">
-                    <svg class="bi flex-shrink-0 me-2 align-middle ms-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
-                    <strong class="me-auto">좋아요 등록 실패</strong>
-                    <small>${formatTimeDifference(timeDiff)}</small>
-                    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+    function appendNewComment(comment) {
+        
+        const newComment = `
+            <li class="pt-3">
+                <div class="mt-4 m-0">
+                    <div class="comment-row m-0 p-0">
+                        <div class="comment-info">
+                            <div id="author" class="comment-author">
+                                <span>${comment.cmt_name}</span>
+                            </div>
+                            <div class="comment-button">
+                                <span class="comment-date">${comment.create_date}</span>
+                                <span class="comment-delete">삭제</span>
+                            </div>
+                        </div>
+                        <div class="comment-content">
+                            <span>
+                                ${comment.cmt_content}
+                            </span>
+                        </div>
+                    </div>
                 </div>
-                <div class="toast-body">
-                    좋아요 등록 실패! 관리자에게 문의하세요.
-                </div>
-            </div>
+            </li>
         `;
-    
-        return toastHTML;
+
+        return newComment;
     }
 
     $("#recom_up").click(function(e) {
@@ -160,8 +152,8 @@ $(document).ready(function() {
             }  else {
                 $.ajax({
                     type: 'POST',
-                    url: 'http://localhost:8080/post/' + postId + "/delete",
-                    contentType: 'application/json',
+                    url: "http://localhost:8080/post/" + postId + "/delete",
+                    contentType: "application/json",
                     success: function(response) {
                         if(response === true) {
                             window.location.href = "http://localhost:8080/";
@@ -179,7 +171,44 @@ $(document).ready(function() {
 
     function insertComment() {
         const cmtContent = $("#cmt_content").val();
+        const name = $("#name").val();
+        const postId = $("#pri_no").val();
+
         console.log("comment : " + cmtContent);
+        console.log("name : " + name);
+        
+        if(cmtContent === undefined || cmtContent === "") {
+            alert("댓글을 작성해주세요!");
+            return;
+        } else {
+
+            $.ajax({
+                type: "POST",
+                url: "http://localhost:8080/post/" + postId + "/comment/write", 
+                data: {
+                    "comment" : cmtContent
+                },
+                contentType: "application/json",
+                success: function(response) {
+                    const cmtList = $("#cmt_list");
+                    // 태그 존재 여부 확인
+                    if($("#no_cmt").length) {
+                        $("#no_cmt").remove();
+                    }
+                    if(response["cmt_status"] !== true) {
+                        alert("댓글 업데이트 에러! \n", response["cmt_status"]);
+                        return;
+                    }
+                    const newComment = appendNewComment(response);
+
+                    cmtList.append(newComment);
+
+                },
+                error: function(error) {
+                    alert("댓글 작성 에러! \n", error);
+                }
+            })
+        }
     }
 
 });
