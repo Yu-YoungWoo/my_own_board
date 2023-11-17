@@ -171,12 +171,9 @@ $(document).ready(function() {
 
     function insertComment() {
         const cmtContent = $("#cmt_content").val();
-        const name = $("#name").val();
         const postId = $("#pri_no").val();
+        const name = $("#name").val(); 
 
-        console.log("comment : " + cmtContent);
-        console.log("name : " + name);
-        
         if(cmtContent === undefined || cmtContent === "") {
             alert("댓글을 작성해주세요!");
             return;
@@ -186,9 +183,9 @@ $(document).ready(function() {
                 type: "POST",
                 url: "http://localhost:8080/post/" + postId + "/comment/write", 
                 data: {
-                    "comment" : cmtContent
+                    "comment" : cmtContent,
+                    "name" : name
                 },
-                contentType: "application/json",
                 success: function(response) {
                     const cmtList = $("#cmt_list");
                     // 태그 존재 여부 확인

@@ -4,7 +4,11 @@ $("#logout").click(function() {
 });
 
 $("#login").click(function() {
-    loginUser();
+    const loginConfirm = confirm("로그인 하시겠습니까?");
+    
+    if(loginConfirm) {
+        loginUser();
+    }
 });
 
 function loginUser() {

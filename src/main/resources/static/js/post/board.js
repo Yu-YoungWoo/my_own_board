@@ -1,12 +1,11 @@
 $("#search-btn").click(function() {
-    getSearchList();
-    
+    console.log("테스트");
+    getSearchList(); 
 });
 
 const searchInput = document.getElementById("search-input");
 /* 한글 입력 시 2번 입력되는 문제 해결 - keypress */
 searchInput.addEventListener("keyup", function(event) {
-    console.log("테스트");
 
     if(event.key == "Enter") {
         event.preventDefault();
@@ -15,11 +14,10 @@ searchInput.addEventListener("keyup", function(event) {
 });
 
 
-
-
 function getSearchList() {
     const query = $("#search-input").val();
     const search_type = $("#search_type").val();
+    var isAuthenticated = $('')
 
     const param = new URLSearchParams();
 
@@ -38,4 +36,13 @@ function getSearchList() {
         success: function(result) {
         }
     }); 
+}
+
+function checkLoginStatus(isAuthenticated) {
+    
+    if(isAuthenticated === true) {
+        location.href = "/write";
+    } else {
+        location.href = "/login";
+    }
 }

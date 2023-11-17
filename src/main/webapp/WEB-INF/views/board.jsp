@@ -99,7 +99,7 @@
                         </form>
                     </div>
                     <div class="col">
-                        <a href="/write" class="link-secondary" style="cursor: pointer;">
+                        <a class="link-secondary" style="cursor: pointer;" onclick="checkLoginStatus('${isAuthenticated}')">
                             <p id="write-btn" class="mb-0 link-secondary" style="display: inline-block; cursor: pointer;">
                                 <i class="fas fa-pen fa-xl"></i>
                             </p>

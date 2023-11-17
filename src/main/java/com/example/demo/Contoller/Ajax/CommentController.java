@@ -20,9 +20,12 @@ public class CommentController {
     @PostMapping("/comment/write")
     @ResponseBody
     public commentRep POST_comment(@PathVariable("postNum") int pri_no, 
-                             @RequestParam("comment") String comment, 
-                             @RequestParam("name") String cmt_name) {
+                             @RequestParam(value="comment", required=false) String comment, 
+                             @RequestParam(value="name", required = false) String cmt_name) {
 
+
+        System.out.println("comment : " + comment);
+        System.out.println("name : " + cmt_name);
         commentRep rep = commentService.insertComment(comment, cmt_name, pri_no);
 
         return rep;

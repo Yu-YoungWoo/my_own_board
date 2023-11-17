@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import com.example.demo.DTO.Response.post.postModifyRep;
 import com.example.demo.Mybatis.DAO.comment;
-import com.example.demo.Mybatis.DAO.post;
 import com.example.demo.Mybatis.DAO.user;
 import com.example.demo.Service.BoardService;
 import com.example.demo.Service.CommentService;
@@ -64,16 +63,18 @@ public class BoardController {
     @GetMapping("/post/{postNum}")
     public String GET_boardDetail(@PathVariable("postNum") String pri_no, Model model, Authentication auth) {
         LinkedHashMap<String, Object> map = new LinkedHashMap<String, Object>();
-        
+        String userName = "";
+        String id = "";
+        boolean userAuth = userService.validAuthUser();
+
         // SecurityContextHolder의 유저 권한을 통해 로그인 확인
-        model.addAttribute("isAuthenticated", userService.validAuthUser());
+        model.addAttribute("isAuthenticated", userAuth);
     
-        System.out.println("auth : " + auth);
-        // 유저 정보 조회 (댓글)
-        if(auth != null) {
+        // 유저 정보 조회
+        if(userAuth) {
             user findUser = userService.findUserById(auth.getName());
-            System.out.println("findUser.getName() : " + findUser.getName());
-            map.put("name", findUser.getName());
+            userName = findUser.getName();
+            id = auth.getName();
         }
 
         /* 글 정보 조회 */
@@ -88,10 +89,10 @@ public class BoardController {
         map.put("cmtCount", Integer.valueOf(comments.size()));
         
         // user id 정보 조회 (글 수정, 삭제 가능 여부 판단)
-        String id = (auth == null) ? "" : auth.getName();
-        
         canEditOrDelete = boardService.countPostJoinUser(id , Integer.parseInt(pri_no));
         
+        // 유저 닉네임 추가 (댓글)
+        map.put("name", userName);
         /* 
          * 조회 수 증가 시 동시성 문제 있음 
          * 어떻게 해결 할지 고민해봐야 할 문제...
