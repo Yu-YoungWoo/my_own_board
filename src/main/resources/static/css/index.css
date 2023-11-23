@@ -80,15 +80,6 @@ textarea::placeholder {
     padding: 0.583rem 1.25rem;
 }
 
-.comment-delete::before {
-    content: "";
-    display: inline-block;
-    width: 1px;
-    height: 12px;
-    background-color: #ccc;
-    margin: 0 8px 0 8px;
-    vertical-align: -2px;
-}
 
 .cursor {
     cursor: pointer;
@@ -193,7 +184,7 @@ textarea::placeholder {
     font-size: 1.1rem;
 }
 
-.create_date::before {
+.sep_line::before {
     content: "";
     display: inline-block;
     width: 1px;
@@ -202,6 +193,7 @@ textarea::placeholder {
     margin: 0 8px 0 8px;
     vertical-align: -2px;
 }
+
 
 .post_author {
     position: relative;

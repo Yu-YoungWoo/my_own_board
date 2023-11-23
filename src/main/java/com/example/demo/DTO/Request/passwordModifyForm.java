@@ -7,7 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Getter @Setter
-public class passwordModifyForm {
+public class PasswordModifyForm {
 
     
     @NotBlank(message = "현재 비밀번호는 공백일 수 없습니다.")

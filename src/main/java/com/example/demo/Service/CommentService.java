@@ -5,8 +5,9 @@ import java.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.demo.DTO.Response.post.ajax.commentRep;
-import com.example.demo.Mybatis.DAO.comment;
+import com.example.demo.DTO.Response.post.ajax.DeleteCommentRep;
+import com.example.demo.DTO.Response.post.ajax.InsertCommentRep;
+import com.example.demo.Mybatis.DAO.Comment;
 import com.example.demo.Mybatis.mapper.CommentMapper;
 
 @Service
@@ -20,15 +21,15 @@ public class CommentService {
         return cmtCount;
     }
 
-    public List<comment> findAllCommentBypostId(int post_pri_no) {
-        List<comment> findRows = commentMapper.findAllCommentBypostId(post_pri_no);
+    public List<Comment> findAllCommentBypostId(int post_pri_no) {
+        List<Comment> findRows = commentMapper.findAllCommentBypostId(post_pri_no);
 
         return findRows;
     }
 
-    public commentRep insertComment(String comment, String cmt_name, int pri_no) {
-        comment newComment = new comment();
-        commentRep newCommentRep = new commentRep();
+    public InsertCommentRep insertComment(String comment, String cmt_name, int pri_no) {
+        Comment newComment = new Comment();
+        InsertCommentRep newCommentRep = new InsertCommentRep();
 
         comment = comment.replace("\r\n", "<br>");
 
@@ -47,7 +48,29 @@ public class CommentService {
             newCommentRep.setCmt_status(true);
         }
 
+        // 댓글 개수 조회
+        int cmtCount = commentMapper.countCommentBypostId(pri_no);
+
+        newCommentRep.setCmt_count(cmtCount);
+
         return newCommentRep;
+    }
+
+    public DeleteCommentRep deleteComment(int pri_no, String cmt_no) {
+        DeleteCommentRep rep = new DeleteCommentRep();
+        int cmtNo = Integer.parseInt(cmt_no);
+        int deleteRows = commentMapper.deleteComment(pri_no, cmtNo);
+
+        if(deleteRows > 0) {
+            int cmtCount = commentMapper.countCommentBypostId(pri_no);
+            rep.setCmt_count(cmtCount);
+            rep.setStatus(true);
+            
+            return rep;
+        }
+        rep.setStatus(false);
+        
+        return rep;
     }
     
 }

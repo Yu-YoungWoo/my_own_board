@@ -5,7 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
-import com.example.demo.Mybatis.DAO.user;
+import com.example.demo.Mybatis.DAO.User;
 
 
 
@@ -13,17 +13,17 @@ import com.example.demo.Mybatis.DAO.user;
 public interface UserMapper {
 
     // Find User
-    user findUserById(String id);
-    user findUserByName(String name);
-    user findUserByIdAndPassword(@Param("id") String id, @Param("pw") String pw);
+    User findUserById(String id);
+    User findUserByName(String name);
+    User findUserByIdAndPassword(@Param("id") String id, @Param("pw") String pw);
     int countUserById(String id);
     int countUserByName(String name);
 
     // Find All Users
-    List<user> findAll();
+    List<User> findAll();
 
     // Create User
-    boolean createUser(user user);
+    boolean createUser(User user);
 
     // Update User
     int updateUser(LinkedHashMap<String, Object> map);

@@ -6,19 +6,19 @@
         FROM user;
     </select>
 
-    <select id="findUserById" resultType="user">
+    <select id="findUserById" resultType="User">
         SELECT *
         FROM user 
         WHERE id = #{id};
     </select>
 
-    <select id="findUserByName" resultType="user">
+    <select id="findUserByName" resultType="User">
         SELECT *
         FROM user 
         WHERE name = #{name};
     </select>
 
-    <select id="findUserByIdAndPassword" resultType="user">
+    <select id="findUserByIdAndPassword" resultType="User">
         SELECT *
         FROM user 
         WHERE id = #{id} and pw = #{pw} 
@@ -37,7 +37,7 @@
     </select>
     
 
-    <insert id="createUser" parameterType="user">
+    <insert id="createUser" parameterType="User">
         INSERT 
         INTO user (id, pw, name, tel, email, create_date, role)
         VALUES (#{id}, #{pw}, #{name}, #{tel}, #{email}, #{create_date}, #{role});

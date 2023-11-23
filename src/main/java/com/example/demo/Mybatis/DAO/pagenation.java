@@ -3,7 +3,7 @@ package com.example.demo.Mybatis.DAO;
 import lombok.Data;
 
 @Data
-public class pagenation {
+public class Pagenation {
 
     private static final int PAGE_SIZE = 10; // 한 페이지에 보여줄 개수
     private static final int DISPLAY_PAGENUM = 5; // 한번에 표시할 페이지 개수
@@ -18,7 +18,7 @@ public class pagenation {
     private boolean prev;
     private boolean next;
 
-    public pagenation(int currentPage) {
+    public Pagenation(int currentPage) {
         this.startPost = (currentPage - 1) * PAGE_SIZE;
         this.currentPage = currentPage;
         this.currentPage = currentPage;

@@ -15,11 +15,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.example.demo.DTO.Request.basicInfoModifyForm;
-import com.example.demo.DTO.Request.joinForm;
-import com.example.demo.DTO.Request.loginForm;
-import com.example.demo.DTO.Request.passwordModifyForm;
-import com.example.demo.Mybatis.DAO.user;
+import com.example.demo.DTO.Request.BasicInfoModifyForm;
+import com.example.demo.DTO.Request.JoinForm;
+import com.example.demo.DTO.Request.LoginForm;
+import com.example.demo.DTO.Request.PasswordModifyForm;
+import com.example.demo.Mybatis.DAO.User;
 import com.example.demo.Service.UserService;
 
 import lombok.extern.log4j.Log4j2;
@@ -43,7 +43,7 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public String POST_login(loginForm form, RedirectAttributes redirectAttributes) {
+    public String POST_login(LoginForm form, RedirectAttributes redirectAttributes) {
 
         redirectAttributes.addFlashAttribute("loginFailed", true);
 
@@ -64,7 +64,7 @@ public class UserController {
     }
 
     @PostMapping("/join")
-    public String POST_join(@Valid joinForm form, BindingResult bindingResult, Model model, RedirectAttributes redirectAttributes) {
+    public String POST_join(@Valid JoinForm form, BindingResult bindingResult, Model model, RedirectAttributes redirectAttributes) {
 
         LinkedHashMap<String, Object> map = new LinkedHashMap<>();
 
@@ -97,7 +97,7 @@ public class UserController {
             return "redirect:/login";
         }
 
-        user findUser = userService.findUserById(auth.getName());
+        User findUser = userService.findUserById(auth.getName());
 
         model.addAttribute("isAuthenticated", authStatus);
         model.addAttribute("user", findUser);
@@ -124,7 +124,7 @@ public class UserController {
      * @return - 결과에 따른 페이지 String 값 
      */
     @PostMapping("/basic-info-modify")
-    public String POST_userModify(@Valid basicInfoModifyForm form, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model, Authentication auth) {
+    public String POST_userModify(@Valid BasicInfoModifyForm form, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model, Authentication auth) {
 
         LinkedHashMap<String, Object> map = new LinkedHashMap<>();
         
@@ -137,7 +137,7 @@ public class UserController {
 
         log.info("form Email : " + form.getEmail());
 
-        user findUser = userService.findUserById(auth.getName());
+        User findUser = userService.findUserById(auth.getName());
 
         if(bindingResult.hasErrors()) {
             System.out.println("bindingResult : " + bindingResult);
@@ -172,7 +172,7 @@ public class UserController {
     }
 
     @PostMapping("/user-password-modify")
-    public String POST_userPasswordModify(@Valid passwordModifyForm form, BindingResult bindingResult, RedirectAttributes redirectAttributes, Authentication auth) {
+    public String POST_userPasswordModify(@Valid PasswordModifyForm form, BindingResult bindingResult, RedirectAttributes redirectAttributes, Authentication auth) {
         LinkedHashMap<String, Object> passwordModifyMap = new LinkedHashMap<>();
         boolean authStatus = userService.validAuthUser();
         
@@ -181,7 +181,7 @@ public class UserController {
             return "redirect:/login";
         }
 
-        user findUser = userService.findUserById(auth.getName());
+        User findUser = userService.findUserById(auth.getName());
 
         if(bindingResult.hasErrors()) {
             String fieldErrorName = "";

@@ -13,22 +13,28 @@
 
     <!-- ########## SELECT ########## -->
 
-    <select id="findAllComment" resultType="comment">
+    <select id="findAllComment" resultType="Comment">
         SELECT *
         FROM comment
     </select>
 
-    <select id="findAllCommentBypostId" resultType="comment">
+    <select id="findAllCommentBypostId" resultType="Comment">
         SELECT *
         FROM comment
         WHERE post_pri_no = #{post_pri_no}
     </select>
 
     <!-- ########## INSERT ########## -->
-    <insert id="insertComment" parameterType="comment">
+    <insert id="insertComment" parameterType="Comment">
         INSERT
         INTO comment(cmt_name, cmt_content, create_date, post_pri_no)
         VALUES(#{cmt_name}, #{cmt_content}, #{create_date}, #{post_pri_no})
     </insert>
+
+    <delete id="deleteComment" parameterType="int">
+        DELETE
+        FROM comment
+        WHERE cmt_no = #{cmt_no} and post_pri_no = #{pri_no}
+    </delete>
 
 </mapper>

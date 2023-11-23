@@ -7,7 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Getter @Setter
-public class basicInfoModifyForm {
+public class BasicInfoModifyForm {
 
     @NotBlank(message = "아이디는 필수입니다.")
     @Pattern(regexp = "[a-zA-Z0-9]{4,20}", message = "올바른 아이디 형식을 입력해주세요.")

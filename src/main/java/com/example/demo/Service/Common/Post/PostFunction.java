@@ -5,8 +5,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.example.demo.Mybatis.DAO.pagenation;
-import com.example.demo.Mybatis.DAO.post;
+import com.example.demo.Mybatis.DAO.Pagenation;
+import com.example.demo.Mybatis.DAO.Post;
 import com.example.demo.Mybatis.mapper.BoardMapper;
 
 import lombok.extern.slf4j.Slf4j;
@@ -18,9 +18,9 @@ public class PostFunction {
     @Autowired
     private BoardMapper boardMapper;
 
-    public pagenation rtnPagenation(String page) {
+    public Pagenation rtnPagenation(String page) {
         
-        pagenation pagenation = new pagenation(Integer.parseInt(page));
+        Pagenation pagenation = new Pagenation(Integer.parseInt(page));
 
 
         /* 개시글 전체 개수  */
@@ -45,8 +45,8 @@ public class PostFunction {
         return pagenation;
     }
 
-    public pagenation rtnPagenation(String page, String query, String search_type) {
-        pagenation pagenation = new pagenation(Integer.parseInt(page));
+    public Pagenation rtnPagenation(String page, String query, String search_type) {
+        Pagenation pagenation = new Pagenation(Integer.parseInt(page));
 
         int totalPosts = 0;
 
@@ -87,7 +87,7 @@ public class PostFunction {
     }
 
 
-    public List<post> formatCreate_date(List<post> posts) {
+    public List<Post> formatCreate_date(List<Post> posts) {
         posts.forEach(post -> {
             String[] split = post.getCreate_date().split(" ");
             

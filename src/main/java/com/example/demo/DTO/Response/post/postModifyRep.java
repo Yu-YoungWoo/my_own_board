@@ -7,7 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Getter @Setter
-public class postModifyRep {
+public class PostModifyRep {
     // author
     @NotBlank(message = "유저 정보는 비어있을 수 없습니다.")
     private String name;

@@ -6,7 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Getter @Setter
-public class loginForm {
+public class LoginForm {
 
     @NotBlank(message = "아이디는 필수 입니다.")
     private String id;

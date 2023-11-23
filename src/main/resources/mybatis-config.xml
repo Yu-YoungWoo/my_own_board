@@ -4,10 +4,10 @@
 
 <configuration>
     <typeAliases>
-		<typeAlias type="com.example.demo.Mybatis.DAO.user" alias="user" />
-		<typeAlias type="com.example.demo.Mybatis.DAO.post" alias="post" />
-		<typeAlias type="com.example.demo.Mybatis.DAO.comment" alias="comment" />
+		<typeAlias type="com.example.demo.Mybatis.DAO.User" alias="User" />
+		<typeAlias type="com.example.demo.Mybatis.DAO.Post" alias="Post" />
+		<typeAlias type="com.example.demo.Mybatis.DAO.Comment" alias="Comment" />
 
-		<typeAlias type="com.example.demo.DTO.Request.joinForm" alias="joinForm"/>
+		<typeAlias type="com.example.demo.DTO.Request.JoinForm" alias="JoinForm"/>
 	</typeAliases>
 </configuration>

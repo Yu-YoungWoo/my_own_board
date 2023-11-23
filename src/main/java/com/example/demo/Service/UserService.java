@@ -9,10 +9,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 
-import com.example.demo.DTO.Request.basicInfoModifyForm;
-import com.example.demo.DTO.Request.joinForm;
-import com.example.demo.DTO.Request.passwordModifyForm;
-import com.example.demo.Mybatis.DAO.user;
+import com.example.demo.DTO.Request.BasicInfoModifyForm;
+import com.example.demo.DTO.Request.JoinForm;
+import com.example.demo.DTO.Request.PasswordModifyForm;
+import com.example.demo.Mybatis.DAO.User;
 import com.example.demo.Mybatis.VO.UserRole;
 import com.example.demo.Mybatis.mapper.UserMapper;
 import com.example.demo.Service.Common.User.UserFunction;
@@ -33,15 +33,15 @@ public class UserService {
      * 유저의 모든 정보를 가져오는 Mapper
      * @return List<user>
      */
-    public List<user> findAll() {
+    public List<User> findAll() {
         return userMapper.findAll();
     }
 
-    public user findUserById(String id) {
+    public User findUserById(String id) {
         return userMapper.findUserById(id);
     }
 
-    public user findUserByName(String name) {
+    public User findUserByName(String name) {
         return userMapper.findUserByName(name);
     }
 
@@ -72,7 +72,7 @@ public class UserService {
     }
 
 
-    public LinkedHashMap<String, Object> createUser(joinForm form) {
+    public LinkedHashMap<String, Object> createUser(JoinForm form) {
         LinkedHashMap<String, Object> map = new LinkedHashMap<>();
 
         int countIdRows = userMapper.countUserById(form.getId());
@@ -96,7 +96,7 @@ public class UserService {
             return map;
         } else {
             ModelMapper modelMapper = new ModelMapper();
-            user newUser = new user();
+            User newUser = new User();
             
             modelMapper.map(form, newUser);
             
@@ -113,11 +113,11 @@ public class UserService {
         }
     }
 
-    public LinkedHashMap<String, Object> updateBasicInfo(basicInfoModifyForm form, String curId) {
+    public LinkedHashMap<String, Object> updateBasicInfo(BasicInfoModifyForm form, String curId) {
         LinkedHashMap<String, Object> updateMap = new LinkedHashMap<>();
         ModelMapper modelMapper = new ModelMapper();
-        user findUser = userMapper.findUserById(curId);
-        user updateUser = new user();
+        User findUser = userMapper.findUserById(curId);
+        User updateUser = new User();
 
         modelMapper.map(form, updateUser);
         updateUser.setPw(findUser.getPw());
@@ -148,7 +148,7 @@ public class UserService {
         return updateMap;
     }
 
-    public LinkedHashMap<String, Object> updatePassword(passwordModifyForm form, String curId) {
+    public LinkedHashMap<String, Object> updatePassword(PasswordModifyForm form, String curId) {
         LinkedHashMap<String, Object> updateMap = new LinkedHashMap<>();
         
         updateMap.put("pw", encoder.encode(form.getNewPassword()));
@@ -189,7 +189,7 @@ public class UserService {
         /* 유저 정보 수정 - BASIC-INFO-MODIFY */ 
         else if(type.toUpperCase().equals("BASIC-INFO-MODIFY")) {
 
-            user findUser = userMapper.findUserById(id);
+            User findUser = userMapper.findUserById(id);
             map.put("user", findUser);
             map.put("updateUserFailStatus", true);
             map.put("updateUserFailMsg", "계정 업데이트 실패! 조건에 맞게 작성 해주세요.");
@@ -208,7 +208,7 @@ public class UserService {
     }
 
     public boolean validAuthUser() {
-        user authUser = userFunction.returnUserByAuthentication();
+        User authUser = userFunction.returnUserByAuthentication();
 
         if(authUser == null) {
             return false;

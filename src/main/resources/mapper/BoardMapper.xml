@@ -35,7 +35,7 @@
 
     <!-- ########## SELECT ########## -->
 
-    <select id="findAll" resultType="post">
+    <select id="findAll" resultType="Post">
     <![CDATA[ 
         SELECT *
         FROM post;
@@ -43,20 +43,20 @@
     </select>
 
 
-    <select id="findPostWithPostNum" resultType="post">
+    <select id="findPostWithPostNum" resultType="Post">
         SELECT *
         FROM post
         WHERE pri_no = ${postNum};
     </select>
 
-    <select id="findPostsWithPaging" resultType="post">
+    <select id="findPostsWithPaging" resultType="Post">
         SELECT *
         FROM post 
         ORDER BY pri_no DESC 
         LIMIT #{startPost}, 10; 
     </select>
 
-    <select id="findPostWithPagingAndSearchType" resultType="post">
+    <select id="findPostWithPagingAndSearchType" resultType="Post">
         SELECT *
         FROM post
         <where>
@@ -79,7 +79,7 @@
     
     <!-- ########## INSERT ########## -->
 
-    <insert id="insertPost" parameterType="post">
+    <insert id="insertPost" parameterType="Post">
         INSERT 
         INTO post(title, content, author, views, likes, dislikes, create_date) 
         VALUES(#{title}, #{content}, #{author}, 0, 0, 0, #{create_date})
@@ -89,7 +89,7 @@
 
     <!-- ########## UPDATE ########## -->
 
-    <update id="updatePostWithPostNum" parameterType="post">
+    <update id="updatePostWithPostNum" parameterType="Post">
         UPDATE post
         SET title = #{title}, content = #{content}, create_date = #{create_date}
         WHERE pri_no = #{pri_no};

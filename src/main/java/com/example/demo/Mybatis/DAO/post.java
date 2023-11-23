@@ -6,7 +6,7 @@ import java.util.Date;
 import lombok.Data;
 
 @Data
-public class post {
+public class Post {
     private int pri_no;
     private String title;
     private String content;
@@ -16,7 +16,7 @@ public class post {
     private int dislikes;
     private String create_date;
 
-    public post() {
+    public Post() {
 
         this.views = 0L;
         this.likes = 0;

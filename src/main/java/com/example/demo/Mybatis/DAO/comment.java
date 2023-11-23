@@ -6,7 +6,7 @@ import java.util.Date;
 import lombok.Data;
 
 @Data
-public class comment {
+public class Comment {
 
     private int cmt_no;
     // 작성자
@@ -19,7 +19,7 @@ public class comment {
     private String create_date;
 
 
-    public comment() {
+    public Comment() {
         Date now = new Date();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         String formattedDate = dateFormat.format(now);

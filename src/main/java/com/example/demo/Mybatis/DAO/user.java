@@ -9,7 +9,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Getter @Setter
-public class user {
+public class User {
     private int pri_no;
     private String id;
     private String pw;

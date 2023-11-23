@@ -9,11 +9,11 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.demo.DTO.Response.post.postModifyRep;
-import com.example.demo.DTO.Response.post.ajax.postDisLikeRep;
-import com.example.demo.DTO.Response.post.ajax.postLikeRep;
-import com.example.demo.Mybatis.DAO.pagenation;
-import com.example.demo.Mybatis.DAO.post;
+import com.example.demo.DTO.Response.post.PostModifyRep;
+import com.example.demo.DTO.Response.post.ajax.PostDisLikeRep;
+import com.example.demo.DTO.Response.post.ajax.PostLikeRep;
+import com.example.demo.Mybatis.DAO.Pagenation;
+import com.example.demo.Mybatis.DAO.Post;
 import com.example.demo.Mybatis.mapper.BoardMapper;
 import com.example.demo.Service.Common.Post.PostFunction;
 
@@ -35,11 +35,11 @@ public class BoardService {
         LinkedHashMap<String, Object> map = new LinkedHashMap<>();
 
         log.info("pagenation 객체-----------------------------");
-        pagenation pagenation = postFunction.rtnPagenation(page);
+        Pagenation pagenation = postFunction.rtnPagenation(page);
 
         log.info("게시글 찾는 페이징-----------------------------");
 
-        List<post> posts =  boardMapper.findPostsWithPaging(pagenation.getStartPost());
+        List<Post> posts =  boardMapper.findPostsWithPaging(pagenation.getStartPost());
 
         posts = postFunction.formatCreate_date(posts);
 
@@ -59,11 +59,11 @@ public class BoardService {
 
         log.info("검색 쿼리 + pagenation 객체---------------");
 
-        pagenation pagenation = postFunction.rtnPagenation(page, query, search_type);
+        Pagenation pagenation = postFunction.rtnPagenation(page, query, search_type);
 
         log.info("검색 쿼리 + 게시글 찾는 페이징-----------------------------");
         log.info("pagenation.getStartPost() : " + pagenation.getStartPost());
-        List<post> posts = boardMapper.findPostWithPagingAndSearchType(pagenation.getStartPost(), query, search_type);
+        List<Post> posts = boardMapper.findPostWithPagingAndSearchType(pagenation.getStartPost(), query, search_type);
 
         posts = postFunction.formatCreate_date(posts);
 
@@ -91,7 +91,7 @@ public class BoardService {
         
         map = new LinkedHashMap<>();
 
-        post findPost = boardMapper.findPostWithPostNum(pri_no);
+        Post findPost = boardMapper.findPostWithPostNum(pri_no);
 
         findPost.setContent(findPost.getContent().replace("<br>", "\r\n"));
 
@@ -105,7 +105,7 @@ public class BoardService {
     
     public void insertPost(String title, String content, String name) {
 
-        post newPost = new post();
+        Post newPost = new Post();
 
         content = content.replace("\r\n", "<br>");
 
@@ -119,11 +119,11 @@ public class BoardService {
 
     /* ----------------- UPDATE ----------------- */
     
-    public boolean updatePostWithPostNum(postModifyRep form, String postNum) {
+    public boolean updatePostWithPostNum(PostModifyRep form, String postNum) {
         ModelMapper modelMapper = new ModelMapper();
 
 
-        post findPost = boardMapper.findPostWithPostNum(postNum);
+        Post findPost = boardMapper.findPostWithPostNum(postNum);
 
         findPost.setContent(form.getTitle().replace("\r\n", "<br>"));
         modelMapper.map(form, findPost);
@@ -138,8 +138,8 @@ public class BoardService {
     }
 
 
-    public postLikeRep updatePostInLike(String pri_no, String like) {
-        postLikeRep rep = new postLikeRep();
+    public PostLikeRep updatePostInLike(String pri_no, String like) {
+        PostLikeRep rep = new PostLikeRep();
         int updateRows = boardMapper.updatePostInLike(Integer.parseInt(pri_no));
 
         if(updateRows == 0) {
@@ -152,8 +152,8 @@ public class BoardService {
         return rep;
     }
 
-    public postDisLikeRep updatePostInDisLike(String pri_no, String dislike) {
-        postDisLikeRep rep = new postDisLikeRep();
+    public PostDisLikeRep updatePostInDisLike(String pri_no, String dislike) {
+        PostDisLikeRep rep = new PostDisLikeRep();
 
         int updateRows = boardMapper.updatePostInDisLike(Integer.parseInt(pri_no));
 

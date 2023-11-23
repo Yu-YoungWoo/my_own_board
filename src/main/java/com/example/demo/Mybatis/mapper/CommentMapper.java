@@ -4,7 +4,7 @@ import java.util.*;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import com.example.demo.Mybatis.DAO.comment;
+import com.example.demo.Mybatis.DAO.Comment;
 
 @Mapper
 public interface CommentMapper {
@@ -14,9 +14,10 @@ public interface CommentMapper {
 
 
     // 게시글 댓글 SELECT
-    public List<comment> findAllCommentBypostId(int post_pri_no);
+    public List<Comment> findAllCommentBypostId(int post_pri_no);
 
-    public int insertComment(comment comment);
+    public int insertComment(Comment comment);
 
+    public int deleteComment(int pri_no, int cmt_no);
     
 }

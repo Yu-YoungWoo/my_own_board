@@ -4,7 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Getter @Setter
-public class postDisLikeRep {
+public class PostDisLikeRep {
     private boolean updateStatus;
     private int dislike;
 }

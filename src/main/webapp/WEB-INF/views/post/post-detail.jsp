@@ -23,16 +23,16 @@
                 <div class="post_author">
                     <div class="d-flex justify-content-start fl">
                         <!-- 글쓴이 -->
-                        <span class="">${map.get("post").author}</span>
+                        <span class="author">${map.get("post").author}</span>
                         <!-- 생성일 -->
-                        <span class="create_date">${map.get("post").create_date}</span>
+                        <span class="create_date sep_line">${map.get("post").create_date}</span>
                     </div>
                     <div class="d-flex justify-content-end fr">
                         <span class="views">
                             <span class="me-1">조회</span>
                             <span>${map.get("post").views}</span>
                         </span>
-                        <span class="create_date">
+                        <span class="recom_up_info sep_line">
                             <span class="me-1">추천</span>
                             <span id="header-like">${map.get("post").likes}</span>
                         </span>
@@ -63,7 +63,7 @@
                     <div class="col text-start">
                         <div class="d-flex align-items-center">
                             <span class="me-2 fw-bold">전체 댓글</span>
-                            <span class="fw-bold">${map.get('cmtCount')}</span>
+                            <span id="cmt_count" class="fw-bold">${map.get('cmtCount')}</span>
                         </div>
                     </div>
                     <c:if test="${canEditOrDelete}">
@@ -78,16 +78,17 @@
                     <c:choose>
                         <c:when test="${map.get('cmtCount') != 0}">
                             <c:forEach items="${map.get('comments')}" var="comment">
-                                <li class="pt-3">
+                                <li id="cmt-${comment.cmt_no}" class="pt-3">
                                     <div class="mt-4 m-0">
                                         <div class="comment-row m-0 p-0">
                                             <div class="comment-info">
                                                 <div id="author" class="comment-author">
                                                     <span>${comment.cmt_name}</span>
                                                 </div>
-                                                <div class="comment-button">
+                                                <div id="commentButtons" class="comment-button">
                                                     <span class="comment-date">${comment.create_date}</span>
-                                                    <span class="comment-delete">삭제</span>
+                                                    <span id="updateComment" class="comment-update sep_line">수정</span>
+                                                    <span id="deleteComment" class="comment-delete sep_line cursor" onclick="deleteComment(this)" data-idx="${comment.cmt_no}">삭제</span>                                     
                                                 </div>
                                             </div>
                                             <div class="comment-content">
@@ -108,7 +109,11 @@
                 </ul>
                 <c:if test="${isAuthenticated}">
                     <div class="mt-4">
-                        <textarea id="cmt_content" class="form-control" name="comment" placeholder="타인의 권리를 침해하거나 명예를 훼손하는 댓글은 운영원칙 및 관련 법률에 제재를 받을 수 있습니다."></textarea>
+                        <textarea 
+                            id="cmt_content" 
+                            class="form-control" 
+                            name="comment" 
+                            placeholder="타인의 권리를 침해하거나 명예를 훼손하는 댓글은 운영원칙 및 관련 법률에 제재를 받을 수 있습니다.&#13;&#10;ALT+ENTER로 댓글을 등록할 수 있습니다."></textarea>
                     </div>
     
                     <div class="mt-2">

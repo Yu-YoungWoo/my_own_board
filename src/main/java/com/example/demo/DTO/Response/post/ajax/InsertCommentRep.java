@@ -4,7 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Getter @Setter
-public class commentRep {
+public class InsertCommentRep {
     
     // 작성자
     private String cmt_name;
@@ -14,10 +14,13 @@ public class commentRep {
     //생성 날짜
     private String create_date;
 
+    // 댓글 개수
+    private int cmt_count;
+
     // 댓글 생성 여부
     private boolean cmt_status;
 
-    public commentRep() {
+    public InsertCommentRep() {
         this.cmt_status = false;
     }
 }

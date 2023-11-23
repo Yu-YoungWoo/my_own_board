@@ -5,7 +5,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.example.demo.Mybatis.DAO.user;
+import com.example.demo.Mybatis.DAO.User;
 import com.example.demo.Mybatis.mapper.UserMapper;
 
 import lombok.RequiredArgsConstructor;
@@ -19,7 +19,7 @@ public class PrincipalDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String id) throws UsernameNotFoundException {
         
-        user findUser = userMapper.findUserById(id);
+        User findUser = userMapper.findUserById(id);
 
         if(findUser == null) {
             throw new UsernameNotFoundException("해당 유저를 찾을 수 없습니다.");

@@ -14,9 +14,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import com.example.demo.DTO.Response.post.postModifyRep;
-import com.example.demo.Mybatis.DAO.comment;
-import com.example.demo.Mybatis.DAO.user;
+import com.example.demo.DTO.Response.post.PostModifyRep;
+import com.example.demo.Mybatis.DAO.Comment;
+import com.example.demo.Mybatis.DAO.User;
 import com.example.demo.Service.BoardService;
 import com.example.demo.Service.CommentService;
 import com.example.demo.Service.UserService;
@@ -72,7 +72,7 @@ public class BoardController {
     
         // 유저 정보 조회
         if(userAuth) {
-            user findUser = userService.findUserById(auth.getName());
+            User findUser = userService.findUserById(auth.getName());
             userName = findUser.getName();
             id = auth.getName();
         }
@@ -82,7 +82,7 @@ public class BoardController {
         boolean canEditOrDelete = false;
 
         /* 댓글 정보 조회 */
-        List<comment> comments = commentService.findAllCommentBypostId(Integer.parseInt(pri_no));
+        List<Comment> comments = commentService.findAllCommentBypostId(Integer.parseInt(pri_no));
         map.put("comments", comments);
         
         /* 댓글 개수 count */
@@ -155,7 +155,7 @@ public class BoardController {
 
 
     @PostMapping("/post/{postNum}/modify")
-    public String POST_modify(@Valid postModifyRep form, BindingResult bindingResult, @PathVariable("postNum") String postNum, RedirectAttributes redirectAttributes) {
+    public String POST_modify(@Valid PostModifyRep form, BindingResult bindingResult, @PathVariable("postNum") String postNum, RedirectAttributes redirectAttributes) {
 
         if(bindingResult.hasErrors()) {
             return "redirect:/post/"+postNum+"/modify";

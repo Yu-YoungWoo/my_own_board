@@ -9,7 +9,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Getter @Setter
-public class joinForm {
+public class JoinForm {
         
     @NotBlank(message = "4~20자 / 영문, 숫자만 허용합니다.")
     private String id;

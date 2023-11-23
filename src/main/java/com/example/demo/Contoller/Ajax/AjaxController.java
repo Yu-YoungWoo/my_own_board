@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.example.demo.DTO.Response.post.ajax.postDisLikeRep;
-import com.example.demo.DTO.Response.post.ajax.postLikeRep;
+import com.example.demo.DTO.Response.post.ajax.PostDisLikeRep;
+import com.example.demo.DTO.Response.post.ajax.PostLikeRep;
 import com.example.demo.Service.BoardService;
 import com.example.demo.Service.UserService;
 
@@ -58,24 +58,16 @@ public class AjaxController {
 
     @GetMapping("/check/like")
     @ResponseBody
-    public postLikeRep GET_like(@RequestParam("id") String pri_no, @RequestParam String like) {
+    public PostLikeRep GET_like(@RequestParam("id") String pri_no, @RequestParam String like) {
 
         return boardService.updatePostInLike(pri_no, like);
     }
 
     @GetMapping("/check/dislike")
     @ResponseBody
-    public postDisLikeRep GET_dislike(@RequestParam("id") String pri_no, @RequestParam String dislike) {
+    public PostDisLikeRep GET_dislike(@RequestParam("id") String pri_no, @RequestParam String dislike) {
         return boardService.updatePostInDisLike(pri_no, dislike);
     }
-
-    
-    @GetMapping()
-    @ResponseBody
-    public void GET_views(@RequestParam("id") String pri_no) {
-        
-    }
-    
 
     @GetMapping("/search")
     public String GET_search(@RequestParam(required = false) String query, 

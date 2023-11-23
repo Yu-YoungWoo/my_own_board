@@ -6,13 +6,13 @@ import java.util.Collection;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.example.demo.Mybatis.DAO.user;
+import com.example.demo.Mybatis.DAO.User;
 
 public class PrincipalDetails implements UserDetails {
 
-    private user user;
+    private User user;
 
-    public PrincipalDetails(user user) {
+    public PrincipalDetails(User user) {
         this.user = user;
     }
 
