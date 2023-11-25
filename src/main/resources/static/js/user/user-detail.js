@@ -12,11 +12,16 @@ $(document).ready(function() {
 
     // 클릭 이벤트 핸들러에서 함수를 호출하도록 합니다.
     $("#checkDupId").click(checkDupId);
+    $("#checkDupName").click(checkDupName);
 
-    $("[id='close']").click(function() {
-        console.log("닫기 버튼 클릭 : ");
+    $("[id='id-close']").click(function() {
         $("#IdNotDupAlert").hide();
         $("#IdDupAlert").hide();
+    });
+
+    $("[id='name-close']").click(function() {
+        $("#NameNotDupAlert").hide();
+        $("#NameDupAlert").hide();
     });
 
     $(function() {
@@ -28,6 +33,8 @@ $(document).ready(function() {
         // 닉네임
         $("#invalidNameEmptyMsg").hide();
         $("#invalidNameLengthMsg").hide();
+        $("#NameNotDupAlert").hide();
+        $("#NameDupAlert").hide();
 
         // 전화번호
         $("#invalidTelMsg").hide();
@@ -36,8 +43,8 @@ $(document).ready(function() {
         $("#invalidEmailMsg").hide();
     });
 
-     // 4~20자 영문,숫자 조합만 허용
-     document.getElementById("id").addEventListener('input', function() {
+    // 4~20자 영문,숫자 조합만 허용
+    document.getElementById("id").addEventListener('input', function() {
         const options = {
             pattern: /^[a-zA-Z0-9]{4,20}$/,
             invalidId: "#invalidIdMsg"
@@ -94,8 +101,7 @@ $(document).ready(function() {
 });
 
 function deleteUser() {
-    const id = $("#curId").val();
-    const currentTime = new Date(); 
+    const id = $("#curId").val(); 
 
     $.ajax({
         type: 'POST',
@@ -106,21 +112,37 @@ function deleteUser() {
             window.location.href = "/login";
         },
         error: function() {
-            // const errorTime = new Date();
-
-            // const timeDiff = Math.floor((currentTime - errorTime) / 1000);
-            
-            // let toastHTML = displayUserDeleteFailToast(timeDiff);
-
-            // // 동적으로 toast를 추가합니다.
-            // $("#popup").append(toastHTML);
-        
-            // // toast를 표시합니다.
-            // $("#UserDeleteFailToast").toast('show');
-
             alert("계정 삭제 실패! 관리자에게 문의하세요.");
         }
     });
+}
+
+
+function checkDupName() {
+    const name = $("#name").val().trim();
+    const pattern =  /^(?=.*[a-z0-9가-힣])[a-z0-9가-힣]{2,16}$/;
+
+    if(name != "") {
+        const isvalid = pattern.test(name);
+
+        if(isvalid) {
+            const param = new URLSearchParams({name : name});
+            const url = "http://localhost:8080/check/nameDupCheck?" + param.toString();
+            $.ajax({
+                type: 'GET',
+                url: url,
+                success: function(response) {
+                    if(response === "true") {
+                        $("#NameNotDupAlert").show();
+                        $("#NameDupAlert").hide();
+                    } else {
+                        $("#NameNotDupAlert").hide();
+                        $("#NameDupAlert").show();
+                    }
+                }
+            });
+        }
+    }
 }
 
 // 클릭 이벤트 핸들러 밖으로 Ajax 요청 코드를 이동합니다.
@@ -133,13 +155,16 @@ function checkDupId() {
         const isvalid = pattern.test(id);
         
         if(isvalid) {
+            
+            const param = new URLSearchParams({ id: id});
+            const url = "http://localhost:8080/check/idDupCheck?" + param.toString();
+
             $.ajax({
-                type: 'POST',
-                data: {id : id},
-                url: "http://localhost:8080/check/idDupCheck",
-                success: function(result) {
+                type: 'GET',
+                url: url,
+                success: function(response) {
                     
-                    if (result === "true") {
+                    if (response === "true") {
                         $("#IdNotDupAlert").show(); // 중복되지 않은 아이디
                         $("#IdDupAlert").hide();     // 중복된 아이디 숨기기
                     } else {

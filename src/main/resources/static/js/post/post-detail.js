@@ -1,5 +1,5 @@
 $(document).ready(function() {
-
+    
     $("#recom_up").click(function(e) {
         e.preventDefault();
         likePost();
@@ -8,7 +8,7 @@ $(document).ready(function() {
     $("#recom_down").click(function(e) {
         e.preventDefault();
         disLikePost();
-    })
+    });
 
     $("#deletePost").click(function(e) {
         e.preventDefault();
@@ -32,75 +32,82 @@ function likePost() {
 
     const postId = $('#pri_no').val();
     const like = $("#like").text();
+    const isRecommend = $("#recom_box").data("isrecommend");
 
-    const param = new URLSearchParams();
-
-    if(postId === undefined || postId === "") {
-        alert("게시글 ID 조회 실패");   
-        return;
-    }
-
-    if (like === undefined || like === "") {
-        alert("추천 조회 실패");
-        return;
-    }
-
-    param.append("id", postId);
-    param.append("like", like);
-
-    const url = 'http://localhost:8080/check/like?' + param.toString();
-    $.ajax({
-        type: 'GET',
-        url: url,
-        dataType: "json",
-        success: function(response) {
-
-            if(response.updateStatus) {
-                $("#like, #header-like").text(response.like);                    
-            } else {
-                alert("추천 실패! 관리자에게 문의하세요.");
-            }
-        },
-        error: function() {
-
-            alert("추천 실패! 관리자에게 문의하세요.");
-            
+    if(isRecommend) {
+        if (!postId || !like) {
+            alert("게시글 ID 또는 추천 정보를 가져오지 못했습니다.");
+            return;
         }
-    });
+    
+        const param = new URLSearchParams({ id: postId, like: like});
+        const url = 'http://localhost:8080/check/like?' + param.toString();
+        $.ajax({
+            type: 'GET',
+            url: url,
+            dataType: "json",
+            success: function(response) {
+    
+                if(response.updateStatus) {
+                    $("#like, #header-like").text(response.like);                    
+                } else {
+                    alert("추천 실패! 관리자에게 문의하세요.");
+                }
+            },
+            error: function() {
+    
+                alert("추천 실패! 관리자에게 문의하세요.");
+                
+            }
+        });
+    } else {
+        const confirmation = confirm("로그인이 필요합니다. \n로그인 하시겠습니까?");
+
+        if(confirmation) {
+            window.location.href = "http://localhost:8080/login";
+        }
+    }
 }
 
 function disLikePost() {
     const postId = $('#pri_no').val();
     const dislike = $("#dislike").text();
+    const isRecommend = $("#recom_box").data("isrecommend");
 
-    if (!postId || !dislike) {
-        alert("게시글 ID 또는 비추천 정보를 가져오지 못했습니다.");
-        return;
-    }
-
-    const params = new URLSearchParams({ id: postId, dislike: dislike });
-    const url = 'http://localhost:8080/check/dislike?' + params.toString();
-
-    $.ajax({
-        type: 'GET',
-        url: url,
-        dataType: "json",
-        success: function(response) {
-
-            if(response.updateStatus) {
-                $("#dislike").text(response.dislike);
-            } else {
-                alert("추천 실패! 관리자에게 문의하세요.");
-            }
-        },
-        error: function() {
-
-            alert("추천 실패! 관리자에게 문의하세요.");
-            
+    if(isRecommend) {
+        if (!postId || !dislike) {
+            alert("게시글 ID 또는 비추천 정보를 가져오지 못했습니다.");
+            return;
         }
-    });
+    
+        const params = new URLSearchParams({ id: postId, dislike: dislike });
+        const url = 'http://localhost:8080/check/dislike?' + params.toString();
+    
+        $.ajax({
+            type: 'GET',
+            url: url,
+            dataType: "json",
+            success: function(response) {
+    
+                if(response.updateStatus) {
+                    $("#dislike").text(response.dislike);
+                } else {
+                    alert("추천 실패! 관리자에게 문의하세요.");
+                }
+            },
+            error: function() {
+    
+                alert("추천 실패! 관리자에게 문의하세요.");
+                
+            }
+        });
+    } else {
+        const confirmation = confirm("로그인이 필요합니다. \n로그인 하시겠습니까?");
 
-
+        if(confirmation) {
+            window.location.href = "http://localhost:8080/login";
+        }
+    }
 }
 
 function deletePost() {

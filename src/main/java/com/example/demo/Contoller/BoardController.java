@@ -65,21 +65,29 @@ public class BoardController {
         LinkedHashMap<String, Object> map = new LinkedHashMap<String, Object>();
         String userName = "";
         String id = "";
+        boolean isPostEditAndDelete = false;
+        boolean isCommentEditAndDelete = false;
+        boolean isRecommendPost = false;
         boolean userAuth = userService.validAuthUser();
 
         // SecurityContextHolder의 유저 권한을 통해 로그인 확인
         model.addAttribute("isAuthenticated", userAuth);
     
-        // 유저 정보 조회
+        // 지금 들어온 유저
         if(userAuth) {
             User findUser = userService.findUserById(auth.getName());
+            // 닉네임
             userName = findUser.getName();
+            // id
             id = auth.getName();
+
+            isPostEditAndDelete = boardService.isPostEditAndDelete(id , Integer.parseInt(pri_no));
+            model.addAttribute("userName", userName);
+            isRecommendPost = true;
         }
 
         /* 글 정보 조회 */
-        map =  boardService.findPostWithPostNum(pri_no);
-        boolean canEditOrDelete = false;
+        map = boardService.findPostWithPostNum(pri_no);
 
         /* 댓글 정보 조회 */
         List<Comment> comments = commentService.findAllCommentBypostId(Integer.parseInt(pri_no));
@@ -89,7 +97,6 @@ public class BoardController {
         map.put("cmtCount", Integer.valueOf(comments.size()));
         
         // user id 정보 조회 (글 수정, 삭제 가능 여부 판단)
-        canEditOrDelete = boardService.countPostJoinUser(id , Integer.parseInt(pri_no));
         
         // 유저 닉네임 추가 (댓글)
         map.put("name", userName);
@@ -100,7 +107,9 @@ public class BoardController {
          */
         boardService.updatePostView(pri_no);
 
-        model.addAttribute("canEditOrDelete", canEditOrDelete);
+        model.addAttribute("isPostEditAndDelete", isPostEditAndDelete);
+        model.addAttribute("isCommentEditAndDelete", isCommentEditAndDelete);
+        model.addAttribute("isRecommendPost", isRecommendPost);
         model.addAttribute("map", map);
 
         return "post/post-detail";

@@ -193,15 +193,15 @@ public class BoardService {
      * @return true OR false
      */
 
-    public boolean countPostJoinUser(String id, int postNum) {
+    public boolean isPostEditAndDelete(String id, int postNum) {
 
         if(id == null) {
             id = "";
         }
 
-        int selectRows = boardMapper.countPostJoinUser(id, postNum);
+        int countRows = boardMapper.countPostJoinUser(id, postNum);
 
-        if(selectRows > 0) {
+        if(countRows > 0) {
             return true;
         }
         return false;

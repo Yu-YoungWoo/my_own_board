@@ -45,11 +45,13 @@
                             <label for="name">닉네임</label>
                             <div class="d-flex justify-content-start">
                                 <input id="name" name="name" type="text" class="form-control" placeholder="2자 이상 16자 이하, 영어 또는 숫자 또는 한글 조합" value="${user.name}" required/>
-                                <button type="button" id="checkDupName" class="btn btn-outline-secondary ms-2">중복 확인</button>
+                                <button id="checkDupName" type="button" class="btn btn-outline-secondary ms-2">중복 확인</button>
                             </div>
                             <div id="invalidNameEmptyMsg" class="invalid-feedback ms-1">공백은 허용하지 않습니다.</div>
                             <div id="invalidNameLengthMsg" class="invalid-feedback ms-1">닉네임의 길이는 2자 이상 16자 이하로 구성해야 합니다.</div>
                             
+
+                            <jsp:include page="./name_dup_check.jsp"></jsp:include>
                         </div>
 
                         <div class="mb-4">

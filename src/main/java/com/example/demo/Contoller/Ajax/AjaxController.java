@@ -27,9 +27,9 @@ public class AjaxController {
 
     LinkedHashMap<String, Object> map = new LinkedHashMap<>();
 
-    @PostMapping("/check/idDupCheck")
+    @GetMapping("/check/idDupCheck")
     @ResponseBody
-    public String POST_idDupCheck(@RequestParam(required = false, value = "id") String pri_no) {
+    public String POST_idDupCheck(@RequestParam(value = "id") String pri_no) {
         String checkDupId = "init";
 
         if(pri_no != null) {
@@ -41,9 +41,9 @@ public class AjaxController {
         return checkDupId;
     }
 
-    @PostMapping("/check/nameDupCheck")
+    @GetMapping("/check/nameDupCheck")
     @ResponseBody
-    public String POST_nameDupCheck(@RequestParam(required = false, value = "name") String name) {
+    public String POST_nameDupCheck(@RequestParam(value = "name") String name) {
         String checkDupName = "init";
 
         if(name != null) {

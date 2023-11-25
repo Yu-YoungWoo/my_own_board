@@ -49,7 +49,7 @@
 
             <!-- 추천 비추천 -->
             <div class="row" style="margin-top: 70px;">
-                <div class="col text-center">
+                <div id="recom_box" class="col text-center" data-isrecommend="${isRecommendPost}">
                     <span id="like" class="me-3 fs-3 align-middle fw-bold">${map.get("post").likes}</span>
                     <input id="recom_up" type="button" value="추천" class="btn btn-success me-3 recom_up"></input>
                     <input id="recom_down" type="button" value="비추천" class="btn btn-secondary recom_down"></input>
@@ -66,7 +66,7 @@
                             <span id="cmt_count" class="fw-bold">${map.get('cmtCount')}</span>
                         </div>
                     </div>
-                    <c:if test="${canEditOrDelete}">
+                    <c:if test="${isPostEditAndDelete}">
                         <div class="col text-end">
                             <a id="PostModify" class="fw-semibold link-dark link-underline link-underline-opacity-0 me-2" href="/post/${map.get('post').pri_no}/modify">수정</a>
                             <a id="deletePost" class="fw-semibold link-dark link-underline link-underline-opacity-0 me-2 cursor">삭제</a>
@@ -85,11 +85,20 @@
                                                 <div id="author" class="comment-author">
                                                     <span>${comment.cmt_name}</span>
                                                 </div>
-                                                <div id="commentButtons" class="comment-button">
-                                                    <span class="comment-date">${comment.create_date}</span>
-                                                    <span id="updateComment" class="comment-update sep_line">수정</span>
-                                                    <span id="deleteComment" class="comment-delete sep_line cursor" onclick="deleteComment(this)" data-idx="${comment.cmt_no}">삭제</span>                                     
-                                                </div>
+                                                <c:choose>
+                                                    <c:when test="${userName eq comment.cmt_name}">
+                                                        <div id="commentButtons" class="comment-button">
+                                                            <span class="comment-date">${comment.create_date}</span>
+                                                            <span id="updateComment" class="comment-update sep_line">수정</span>
+                                                            <span id="deleteComment" class="comment-delete sep_line cursor" onclick="deleteComment(this)" data-idx="${comment.cmt_no}">삭제</span>                                     
+                                                        </div>
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <div id="commentButtons" class="comment-button">
+                                                            <span class="comment-date">${comment.create_date}</span>
+                                                        </div>
+                                                    </c:otherwise>
+                                                </c:choose>                                                
                                             </div>
                                             <div class="comment-content">
                                                 <span>

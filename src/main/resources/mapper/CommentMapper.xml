@@ -10,7 +10,6 @@
         WHERE post_pri_no = #{post_pri_no}
     </select>
 
-
     <!-- ########## SELECT ########## -->
 
     <select id="findAllComment" resultType="Comment">
@@ -34,7 +33,7 @@
     <delete id="deleteComment" parameterType="int">
         DELETE
         FROM comment
-        WHERE cmt_no = #{cmt_no} and post_pri_no = #{pri_no}
+        WHERE cmt_no = #{cmt_no} and post_pri_no = #{post_pri_no}
     </delete>
 
 </mapper>

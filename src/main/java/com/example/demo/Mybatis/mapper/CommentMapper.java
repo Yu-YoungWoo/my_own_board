@@ -18,6 +18,5 @@ public interface CommentMapper {
 
     public int insertComment(Comment comment);
 
-    public int deleteComment(int pri_no, int cmt_no);
-    
+    public int deleteComment(int post_pri_no, int cmt_no);
 }
