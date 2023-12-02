@@ -15,6 +15,7 @@ public class Post {
     private int likes;
     private int dislikes;
     private String create_date;
+    private int cmt_count;
 
     public Post() {
 

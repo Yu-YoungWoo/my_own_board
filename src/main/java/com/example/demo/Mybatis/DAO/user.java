@@ -8,8 +8,10 @@ import com.example.demo.Mybatis.VO.UserRole;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.io.Serializable;
+
 @Getter @Setter
-public class User {
+public class User implements Serializable {
     private int pri_no;
     private String id;
     private String pw;

@@ -1,7 +1,5 @@
 package com.example.demo.Service;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -25,7 +23,6 @@ public class BoardService {
 
     @Autowired private BoardMapper boardMapper;
     @Autowired private PostFunction postFunction;
-
     /**
      * 게시판 초기 상태의 페이징 설정을 위한 메소드
      * @param page - 현제 페이지

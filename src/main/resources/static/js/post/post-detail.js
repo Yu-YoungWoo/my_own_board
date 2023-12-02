@@ -20,7 +20,7 @@ $(document).ready(function() {
         insertComment();
     });
 
-    $("#cmt_content").keydown(function(e) {
+    $("#cmtTextArea").keydown(function(e) {
         if ((e.altKey || e.metaKey) && e.keyCode == 13) {
             e.preventDefault();
             insertComment();
@@ -123,7 +123,6 @@ function deletePost() {
                 if(response === true) {
                     window.location.href = "http://localhost:8080/";   
                 }
-                alert("게시글 삭제 실패!");
             },
             error: function(error) {
                 alert("게시물 삭제 에러! \n", error);
@@ -133,7 +132,7 @@ function deletePost() {
 }
 
 function insertComment() {
-    const cmtContent = $("#cmt_content").val();
+    const cmtContent = $("#cmtTextArea").val();
     const postId = $("#pri_no").val();
     const name = $("#name").val(); 
 
@@ -147,7 +146,6 @@ function insertComment() {
         url: `http://localhost:8080/post/${postId}/comment/write`, 
         data: { "comment" : cmtContent, "name" : name },
         success: function(response) {
-            const cmtList = $("#cmt_list");
 
             if($("#no_cmt").length) {
                 $("#no_cmt").remove();
@@ -157,19 +155,7 @@ function insertComment() {
                 alert("댓글 업데이트 에러! \n", response.cmt_status);
                 return;
             }
-
-            // 새로운 comment html 태그 생성
-            const newComment = appendNewComment(response);
-
-            // 댓글 추가
-            cmtList.append(newComment);
-
-            // 댓글 작성 textarea 초기화
-            $("#cmt_content").val('');
-
-            // 전체 댓글 개수 update
-            $("#cmt_count").html(response.cmt_status);
-
+            location.reload();
         },
         error: function(error) {
             alert("댓글 작성 에러! \n", error);
@@ -181,7 +167,7 @@ function deleteComment(element) {
     const confirmation = confirm("댓글을 삭제하시겠습니까?");
     const postId = $("#pri_no").val();
     const commentIdx = $(element).data("idx");
-    const commentLi = $(element).closest('li');
+    // const commentLi = $(element).closest('li');
     
     if (confirmation && postId && commentIdx) {
         $.ajax({
@@ -192,7 +178,7 @@ function deleteComment(element) {
             },
             success: function (response) {
                 if (response.status) {
-                    commentLi.remove();
+                    // commentLi.remove();
                     $("#cmt_count").html(response.cmt_count);
                 }
             },
@@ -203,31 +189,36 @@ function deleteComment(element) {
     }
 }
 
+function replyComment(element) {
+    const commentIdx = $(element).data("idx");
+    const commentId = "cmt-" + commentIdx;
+    const replyBox = getReplyBox();
 
-function appendNewComment(comment) {
-        
-    const newComment = `
-        <li class="pt-3">
-            <div class="mt-4 m-0">
-                <div class="comment-row m-0 p-0">
-                    <div class="comment-info">
-                        <div id="author" class="comment-author">
-                            <span>${comment.cmt_name}</span>
-                        </div>
-                        <div class="comment-button">
-                            <span class="comment-date">${comment.create_date}</span>
-                            <span id="updateComment" class="comment-update sep_line">수정</span>
-                            <span id="deleteComment" class="comment-delete sep_line cursor" onclick="deleteComment(this)" data-idx="${comment.cmt_no}">삭제</span>                                     
-                        </div>
-                    </div>
-                    <div class="comment-content">
-                        <span>
-                            ${comment.cmt_content}
-                        </span>
-                    </div>
+    console.log("commentId : " + commentId);
+
+    const nextComment = $("#" + commentId).next();
+    const nextCommentId = nextComment.attr("id");
+    
+    if(nextCommentId === "cmtReply-write") {
+        nextComment.remove();
+    } else {
+        $("#" + commentId).after(replyBox);
+    }
+}
+
+function getReplyBox() {
+    const replyBox =
+    `   <li id="cmtReply-write" class="reply_li underline">
+            <div id="cmtWriteBox" class="d-flex flex-column bg-light rounded p-3 m-2 comment-wirtebox" >
+                <div class="mb-2">
+                    <textarea id="replyTextArea" class="form-control textarea-noresize"></textarea>
+                </div>
+                <div class="d-flex justify-content-end">
+                    <button class="btn btn-secondary submit-reply">등록</button>
                 </div>
             </div>
         </li>
     `;
-    return newComment;
+
+    return replyBox;
 }

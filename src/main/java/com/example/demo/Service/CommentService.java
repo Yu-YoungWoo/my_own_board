@@ -8,21 +8,25 @@ import org.springframework.stereotype.Service;
 import com.example.demo.DTO.Response.post.ajax.DeleteCommentRep;
 import com.example.demo.DTO.Response.post.ajax.InsertCommentRep;
 import com.example.demo.Mybatis.DAO.Comment;
+import com.example.demo.Mybatis.mapper.BoardMapper;
 import com.example.demo.Mybatis.mapper.CommentMapper;
 
 @Service
 public class CommentService {
     
     @Autowired private CommentMapper commentMapper;
+    @Autowired private BoardMapper boardMapper;
 
-
+    private static final int CMT_ADD = 1;
+    private static final int CMT_DEL = -1;
+    
     public int countCommentBypostId(int post_pri_no) {
         int cmtCount = commentMapper.countCommentBypostId(post_pri_no);
         return cmtCount;
     }
 
-    public List<Comment> findAllCommentBypostId(int post_pri_no) {
-        List<Comment> findRows = commentMapper.findAllCommentBypostId(post_pri_no);
+    public List<Comment> findAllOrderCommentBypostId(int post_pri_no) {
+        List<Comment> findRows = commentMapper.findAllOrderCommentBypostId(post_pri_no);
 
         return findRows;
     }
@@ -42,6 +46,7 @@ public class CommentService {
         if(insertRows == 0) {
             newCommentRep.setCmt_status(false);
         } else {
+            
             newCommentRep.setCmt_name(cmt_name);
             newCommentRep.setCmt_content(comment);
             newCommentRep.setCreate_date(newComment.getCreate_date());
@@ -50,6 +55,8 @@ public class CommentService {
 
         // 댓글 개수 조회
         int cmtCount = commentMapper.countCommentBypostId(pri_no);
+
+        boardMapper.updateCmtCount(CMT_ADD, pri_no);
 
         newCommentRep.setCmt_count(cmtCount);
 
@@ -69,6 +76,8 @@ public class CommentService {
             return rep;
         }
         rep.setStatus(false);
+
+        boardMapper.updateCmtCount(CMT_DEL, pri_no);
         
         return rep;
     }

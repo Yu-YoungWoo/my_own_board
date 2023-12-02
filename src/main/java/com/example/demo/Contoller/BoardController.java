@@ -22,6 +22,7 @@ import com.example.demo.Service.CommentService;
 import com.example.demo.Service.UserService;
 
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 
@@ -41,8 +42,6 @@ public class BoardController {
 
         // SecurityContextHolder의 유저 권한을 통해 로그인 확인
         model.addAttribute("isAuthenticated", userService.validAuthUser());
-        
-
         if(page == null) {
             map = boardService.findPostsWithPaging("1");
         } else {
@@ -90,7 +89,7 @@ public class BoardController {
         map = boardService.findPostWithPostNum(pri_no);
 
         /* 댓글 정보 조회 */
-        List<Comment> comments = commentService.findAllCommentBypostId(Integer.parseInt(pri_no));
+        List<Comment> comments = commentService.findAllOrderCommentBypostId(Integer.parseInt(pri_no));
         map.put("comments", comments);
         
         /* 댓글 개수 count */
@@ -178,5 +177,15 @@ public class BoardController {
         }
         
         return "redirect:/post/" + postNum;
+    }
+
+    @PostMapping("/post/{postNum}/delete")
+    @ResponseBody
+    public boolean POST_delete(@PathVariable("postNum") String postNum, RedirectAttributes redirectAttributes) {
+
+        boolean deleteStatus = boardService.deletePostWithPostNum(postNum);
+        
+        // 삭제 성공 - true
+        return deleteStatus;
     }
 }

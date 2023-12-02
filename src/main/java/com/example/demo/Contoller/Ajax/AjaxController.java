@@ -6,11 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.demo.DTO.Response.post.ajax.PostDisLikeRep;
 import com.example.demo.DTO.Response.post.ajax.PostLikeRep;
@@ -49,7 +46,6 @@ public class AjaxController {
         if(name != null) {
             checkDupName = userService.countUserByName(name);
             
-            System.out.println("checkDupName : " + checkDupName);
             return checkDupName;
         }
 
@@ -87,21 +83,5 @@ public class AjaxController {
         
     
         return "board";
-    }
-
-    @PostMapping("/post/{postNum}/delete")
-    @ResponseBody
-    public boolean POST_delete(@PathVariable("postNum") String postNum, RedirectAttributes redirectAttributes) {
-
-        System.out.println("postNum : " + postNum);
-        boolean deleteStatus = boardService.deletePostWithPostNum(postNum);
-        
-        // 삭제 실패 - false
-        if(!deleteStatus) {
-            return !deleteStatus;
-        }
-
-        // 삭제 성공 - true
-        return deleteStatus;
     }
 }

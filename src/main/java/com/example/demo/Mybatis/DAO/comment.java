@@ -18,6 +18,11 @@ public class Comment {
     // 생성 날짜
     private String create_date;
 
+    private int depth;
+
+    private int cmt_group;
+
+    private String reply_yn;
 
     public Comment() {
         Date now = new Date();

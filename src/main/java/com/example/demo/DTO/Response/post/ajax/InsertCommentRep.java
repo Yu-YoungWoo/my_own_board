@@ -6,6 +6,7 @@ import lombok.Setter;
 @Getter @Setter
 public class InsertCommentRep {
     
+    private int cmt_no;
     // 작성자
     private String cmt_name;
     // 댓글

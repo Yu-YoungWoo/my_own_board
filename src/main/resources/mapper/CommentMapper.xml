@@ -23,6 +23,13 @@
         WHERE post_pri_no = #{post_pri_no}
     </select>
 
+    <select id="findAllOrderCommentBypostId" resultType="Comment">
+        SELECT *
+        FROM comment
+        WHERE post_pri_no = #{post_pri_no}
+        ORDER BY COALESCE(cmt_group, cmt_no), depth, create_date;
+    </select>
+
     <!-- ########## INSERT ########## -->
     <insert id="insertComment" parameterType="Comment">
         INSERT

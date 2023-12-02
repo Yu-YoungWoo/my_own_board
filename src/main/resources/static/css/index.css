@@ -1,13 +1,3 @@
-* { 
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-html, body {
-    font-family: "Malgun Gothic", sans-serif;
-    min-height: 100vh;
-}
 
 p {
     margin: 0px;
@@ -31,13 +21,6 @@ input::placeholder {
     font-weight: lighter;
 }
 
-footer {
-    width: 100%;
-    position: absolute;
-    bottom: 0;
-    left: 0;
-}
-
 textarea::placeholder {
     color: #ccc;
     font-weight: lighter;
@@ -47,16 +30,36 @@ textarea::placeholder {
     background-color: #f2f2f2;
 }
 
-#write-Textarea {
+#writeTextarea {
     width: 100%;
     height: 350px;
-    resize:none;
 }
 
-#cmt_content {
+#cmtTextArea {
     width: 100%;
     height: 150px;
+}
+
+#replyTextArea {
+    width: 100%;
+    height: 100px;
+}
+
+.textarea-noresize {
     resize: none;
+}
+
+.underline {
+    border-bottom: 1px solid #eee;
+}
+
+.reply_li {
+    margin: 0px 0px 12px 30px;
+    border-width: 0px 1px 1px 1px;
+}
+
+.submit-reply {
+    width: 100px;
 }
 
 .comment-font {
@@ -77,14 +80,12 @@ textarea::placeholder {
 }
 
 .comment-content {
-    padding: 0.583rem 1.25rem;
+    padding: 0.583rem 0.583rem;
 }
-
 
 .cursor {
     cursor: pointer;
 }
-
 
 .w-55 {
     width: 55%;
@@ -96,7 +97,6 @@ textarea::placeholder {
 
 .window-size-fixed {
     width: 1200px;
-    height: 100vh;
 }
 
 .form-container {
@@ -146,6 +146,9 @@ textarea::placeholder {
     text-overflow: ellipsis;
 }
 
+.cmt_count {
+    color: #999;
+}
 
 .post-row:hover {
     background-color: #ddd;

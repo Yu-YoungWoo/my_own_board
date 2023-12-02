@@ -41,6 +41,9 @@ public interface BoardMapper {
 
     // 조회수 증가
     public int updatePostView(int pri_no);
+
+    // 댓글 개수 count
+    public int updateCmtCount(int amount, int pri_no);
     
     // 글 삭제
     public int deletePostWithPostNum(int pri_no);

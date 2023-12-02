@@ -8,7 +8,7 @@
     <%@ include file="../common/head.jsp" %>
 </head>
 <body class="form-background-color font-nowrap">
-    <div class="container-lg d-flex flex-column window-size-fixed">
+    <div class="container-lg window-size-fixed mt-5">
         <jsp:include page="../common/header.jsp">
             <jsp:param name="userId" value="${post.id}"/>
         </jsp:include>

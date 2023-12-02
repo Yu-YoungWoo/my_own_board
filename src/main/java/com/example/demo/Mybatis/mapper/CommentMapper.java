@@ -12,9 +12,11 @@ public interface CommentMapper {
     // 게시글 댓글 count 
     public int countCommentBypostId(int post_pri_id);
 
-
     // 게시글 댓글 SELECT
     public List<Comment> findAllCommentBypostId(int post_pri_no);
+
+    // 대댓글과 함께 order by한 댓글 SELECT
+    public List<Comment> findAllOrderCommentBypostId(int post_pri_no);
 
     public int insertComment(Comment comment);
 

@@ -9,7 +9,7 @@
 </head>
 <body class="form-background-color font-nowrap">
     
-    <div class="container-lg d-flex flex-column window-size-fixed" style="min-height: 100vh;">
+    <div class="container-lg window-size-fixed mt-5">
         <jsp:include page="../common/header.jsp">
             <jsp:param name="userId" value="${post.id}"/>
         </jsp:include>
@@ -33,7 +33,7 @@
                 <div class="row mb-3">
                     <div class="col">
                         
-                        <textarea id="write-Textarea" class="form-control" name="content" placeholder="타인을 비방하는 게시글은 삭제될 수 있습니다."></textarea>
+                        <textarea id="writeTextarea" class="form-control textarea-noresize" name="content" placeholder="타인을 비방하는 게시글은 삭제될 수 있습니다."></textarea>
                           
                     </div>
                 </div>

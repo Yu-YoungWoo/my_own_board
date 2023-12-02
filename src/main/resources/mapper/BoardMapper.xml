@@ -113,6 +113,12 @@
         SET views = views + 1
         WHERE pri_no = ${pri_no}
     </update>
+
+    <update id="updateCmtCount">
+        UPDATE post
+        SET cmt_count = cmt_count + #{amount}
+        WHERE pri_no = #{pri_no}
+    </update>
     
     <!-- ########## DELETE ########## -->
 

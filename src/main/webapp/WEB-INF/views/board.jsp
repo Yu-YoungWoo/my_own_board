@@ -9,9 +9,9 @@
 </head>
 <body class="form-background-color">
     
-    <div class="container-lg d-flex flex-column window-size-fixed">
+    <div class="container-lg window-size-fixed mt-5">
         <jsp:include page="./common/header.jsp"></jsp:include>
-        <!-- post -->
+        <!-- body -->
         <div class="shadow rounded-4 p-3 bg-white text-center panel">
             <table id="board" class="board-list">
                 <colgroup>
@@ -36,7 +36,9 @@
                     <c:forEach items="${map.get('posts')}" var="post" varStatus="status">
                         <tr id="post-${post.pri_no}" class="pointer post-row" onclick="window.location.href='/post/${post.pri_no}'">
                             <td class="b-num">${post.pri_no}</td>
-                            <td class="b-title">${post.title}</td>
+                            <td class="b-title">
+                                ${post.title}&nbsp;&nbsp;<span class="cmt_count">[${post.cmt_count}]</span>
+                            </td>
                             <td class="b-auth">${post.author}</td>
                             <td class="b-date">${post.create_date}</td>
                             <td class="b-views">${post.views}</td> 
@@ -109,7 +111,8 @@
             </div>
         </div>
         
-        <!-- <jsp:include page="./common/footer.jsp"/> -->
+        <!-- footer -->
+        <jsp:include page="./common/footer.jsp"/>
     </div>
 
     <script src="/js/post/board.js"></script>

@@ -40,9 +40,8 @@ function getSearchList() {
 
 function checkLoginStatus(isAuthenticated) {
     
-    if(isAuthenticated === true) {
-        location.href = "/write";
-    } else {
+    if(isAuthenticated !== true) {
         location.href = "/login";
-    }
+    } 
+    location.href = "/write";
 }
