@@ -114,9 +114,15 @@
         WHERE pri_no = ${pri_no}
     </update>
 
-    <update id="updateCmtCount">
+    <update id="increaseCmtCount">
         UPDATE post
-        SET cmt_count = cmt_count + #{amount}
+        SET cmt_count = cmt_count + 1
+        WHERE pri_no = #{pri_no}
+    </update>
+
+    <update id="decreaseCmtCount">
+        UPDATE post
+        SET cmt_count = cmt_count - 1
         WHERE pri_no = #{pri_no}
     </update>
     

@@ -16,7 +16,7 @@
         <!-- body -->
         <div class="shadow rounded-4 p-4 bg-white panel">
             <input type="hidden" id="pri_no" value="${map.get('post').pri_no}" />
-            <input type="hidden" id="name" value="${map.get('name')}" />
+            <input type="hidden" id="name" value="${userName}" />
             <!-- 헤더 -->
             <div class="row text-start pb-3" style="border-bottom: 1px solid #eee;">
                 <h3>${map.get("post").title}</h3>
@@ -78,90 +78,35 @@
                     <c:choose>
                         <c:when test="${map.get('cmtCount') != 0}">
                             <c:forEach items="${map.get('comments')}" var="comment">
-                                <c:choose>
-                                    <%-- 댓글 --%>
-                                    <c:when test="${comment.depth eq 0}">
-                                        <li id="cmt-${comment.cmt_no}" class="pt-3 underline">
-                                            <div class="mt-4 m-0">
-                                                <div class="comment-row m-0 p-0">
-                                                    <div class="comment-info">
-                                                        <div id="author" class="comment-author">
-                                                            <span>${comment.cmt_name}</span>
-                                                        </div>
-                                                        <c:choose>
-                                                            <%-- 본인이 작성한 댓글이라면 삭제 수정 가능 --%>
-                                                            <c:when test="${userName eq comment.cmt_name}">
-                                                                <div id="commentButtons" class="comment-button">
-                                                                    <span class="comment-date">${comment.create_date}</span>
-                                                                    <span id="updateComment" class="comment-update sep_line cursor">수정</span>
-                                                                    <span id="deleteComment" class="comment-delete sep_line cursor" onclick="deleteComment(this)" data-idx="${comment.cmt_no}">삭제</span>
-                                                                    <%-- <span id="replyComment" class="comment-reply sep_line cursor" onclick="replyComment(this)" data-idx="${comment.cmt_no}">답글</span> --%>                               
-                                                                </div>
-                                                            </c:when>
-                                                            <c:otherwise>
-                                                                <div id="commentButtons" class="comment-button">
-                                                                    <span class="comment-date">${comment.create_date}</span>
-                                                                    <%-- <span id="replyComment" class="comment-reply sep_line cursor" onclick="replyComment(this)" data-idx="${comment.cmt_no}">답글</span> --%>
-                                                                </div>
-                                                            </c:otherwise>
-                                                        </c:choose>                                                
-                                                    </div>
-                                                    <div class="comment-content cursor" onclick="replyComment(this)" data-idx="${comment.cmt_no}">
-                                                        <span>
-                                                            ${comment.cmt_content}
-                                                        </span>
-                                                    </div>
+                                <li id="cmt-${comment.cmt_no}" class="pt-3 underline <c:if test='${comment.depth ne 0}'>reply_li</c:if>">
+                                    <div class="mt-4 m-0">
+                                        <div class="comment-row m-0 p-0">
+                                            <div class="comment-info">
+                                                <div id="author" class="comment-author">
+                                                    <span>${comment.cmt_name}</span>
                                                 </div>
+                                                <div id="commentButtons" class="comment-button">
+                                                    <%-- 본인이 작성한 댓글이라면 삭제 수정 가능 --%>
+                                                    <span class="comment-date">${comment.create_date}</span>
+                                                    <c:if test="${userName eq comment.cmt_name}">
+                                                        <span id="updateComment" class="comment-update sep_line cursor">수정</span>
+                                                        <span id="deleteComment" class="comment-delete sep_line cursor" onclick="deleteComment(this)" data-idx="${comment.cmt_no}">삭제</span>
+                                                    </c:if>
+                                                    <span id="replyComment" class="comment-reply sep_line cursor" onclick="replyComment(this)" data-idx="${comment.cmt_no}" data-name="${userName}" data-status="${isAuthenticated}">답글</span>
+                                                </div>                                                
                                             </div>
-                                            <%--
-                                            <div id="cmtWriteBox" class="d-flex flex-column bg-light rounded p-3 m-2 comment-wirtebox">
-                                                <div class="mb-2">
-                                                    <textarea id="replyTextArea" class="form-control textarea-noresize"></textarea>
-                                                </div>
-                                                <div class="d-flex justify-content-end">
-                                                    <button class="btn btn-secondary submit-reply">등록</button>
-                                                </div>
+                                            <div class="comment-content cursor" onclick="replyComment(this)" data-idx="${comment.cmt_no}" data-name="${userName}" data-status="${isAuthenticated}">
+                                                <span>
+                                                    ${comment.cmt_content}
+                                                </span>
                                             </div>
-                                            --%>
-                                        </li>  
-                                    </c:when>
-                                    <%-- 대댓글 --%>
-                                    <c:otherwise>
-                                        <li id="cmtReply-${comment.cmt_no}" class="reply_li underline">
-                                            <div class="mt-4 m-0">
-                                                <div class="comment-row m-0 p-0">
-                                                    <div class="comment-info">
-                                                        <div id="author" class="comment-author">
-                                                            <span>${comment.cmt_name}</span>
-                                                        </div>
-                                                        <c:choose>
-                                                            <c:when test="${userName eq comment.cmt_name}">
-                                                                <div id="commentButtons" class="comment-button">
-                                                                    <span class="comment-date">${comment.create_date}</span>
-                                                                    <span id="updateComment" class="comment-update sep_line">수정</span>
-                                                                    <span id="deleteComment" class="comment-delete sep_line" onclick="deleteComment(this)" data-idx="${comment.cmt_no}">삭제</span>                                     
-                                                                </div>
-                                                            </c:when>
-                                                            <c:otherwise>
-                                                                <div id="commentButtons" class="comment-button">
-                                                                    <span class="comment-date">${comment.create_date}</span>
-                                                                </div>
-                                                            </c:otherwise>
-                                                        </c:choose>                                                
-                                                    </div>
-                                                    <div class="comment-content cursor">
-                                                        <span>
-                                                            ${comment.cmt_content}
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                            </div>                                        
-                                        </li>                                        
-                                    </c:otherwise>
-                                </c:choose>
+                                        </div>
+                                    </div>
+                                </li>
                             </c:forEach>
                         </c:when>
-                        
+
+                        <%-- 댓글이 없는 상태 --%>
                         <c:otherwise>
                             <p id="no_cmt" class="text-center pt-4"> 아직 댓글이 없습니다.</p>
                         </c:otherwise>
@@ -177,7 +122,7 @@
                     </div>
     
                     <div class="mt-2">
-                        <button id="cmt_btn" class="btn btn-secondary w-100">등록</button>
+                        <button id="cmtBtn" class="btn btn-secondary w-100">등록</button>
                     </div>
                 </c:if>
             </div>

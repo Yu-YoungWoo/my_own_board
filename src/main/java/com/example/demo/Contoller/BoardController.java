@@ -65,14 +65,10 @@ public class BoardController {
         String userName = "";
         String id = "";
         boolean isPostEditAndDelete = false;
-        boolean isCommentEditAndDelete = false;
         boolean isRecommendPost = false;
         boolean userAuth = userService.validAuthUser();
 
-        // SecurityContextHolder의 유저 권한을 통해 로그인 확인
-        model.addAttribute("isAuthenticated", userAuth);
-    
-        // 지금 들어온 유저
+        // 로그인한 유저
         if(userAuth) {
             User findUser = userService.findUserById(auth.getName());
             // 닉네임
@@ -95,10 +91,6 @@ public class BoardController {
         /* 댓글 개수 count */
         map.put("cmtCount", Integer.valueOf(comments.size()));
         
-        // user id 정보 조회 (글 수정, 삭제 가능 여부 판단)
-        
-        // 유저 닉네임 추가 (댓글)
-        map.put("name", userName);
         /* 
          * 조회 수 증가 시 동시성 문제 있음 
          * 어떻게 해결 할지 고민해봐야 할 문제...
@@ -106,9 +98,11 @@ public class BoardController {
          */
         boardService.updatePostView(pri_no);
 
+        // SecurityContextHolder의 유저 권한을 통해 로그인 확인
+        model.addAttribute("isAuthenticated", userAuth);
         model.addAttribute("isPostEditAndDelete", isPostEditAndDelete);
-        model.addAttribute("isCommentEditAndDelete", isCommentEditAndDelete);
         model.addAttribute("isRecommendPost", isRecommendPost);
+        model.addAttribute("userName", userName);
         model.addAttribute("map", map);
 
         return "post/post-detail";

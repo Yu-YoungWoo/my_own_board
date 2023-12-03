@@ -1,12 +1,10 @@
 $(document).ready(function() {
     
     $("#recom_up").click(function(e) {
-        e.preventDefault();
         likePost();
     });
 
     $("#recom_down").click(function(e) {
-        e.preventDefault();
         disLikePost();
     });
 
@@ -15,15 +13,19 @@ $(document).ready(function() {
         deletePost();
     });
 
-    $("#cmt_btn").click(function(e) {
-        e.preventDefault();
+    $("#cmtBtn").click(function(e) {
         insertComment();
     });
 
     $("#cmtTextArea").keydown(function(e) {
         if ((e.altKey || e.metaKey) && e.keyCode == 13) {
-            e.preventDefault();
             insertComment();
+        }
+    });
+
+    $("#replyBtn").click(function(e) {
+        if ((e.altKey || e.metaKey) && e.keyCode == 13) {
+            insertReply();
         }
     });
 });
@@ -178,7 +180,7 @@ function deleteComment(element) {
             },
             success: function (response) {
                 if (response.status) {
-                    // commentLi.remove();
+                    $("#cmt-" + commentIdx).remove();
                     $("#cmt_count").html(response.cmt_count);
                 }
             },
@@ -189,12 +191,29 @@ function deleteComment(element) {
     }
 }
 
+function insertReply() {
+    const postId = $("#pri_no").val();
+    const name = $("#name").val(); 
+    const replyConent = $("#replyTextArea").val();
+
+
+}
+
 function replyComment(element) {
     const commentIdx = $(element).data("idx");
+    const name = $(element).data("name");
+    const loginStatus = $(element).data("status");
     const commentId = "cmt-" + commentIdx;
-    const replyBox = getReplyBox();
+    const replyBox = getReplyBox(name, commentIdx);
+ 
+    if(loginStatus === false) {
+        const confirmation = confirm("로그인이 필요합니다.\n로그인 페이지로 이동하시겠습니까?");
 
-    console.log("commentId : " + commentId);
+        if(confirmation) {
+            window.location.href = "/login";
+        }
+        return;
+    }
 
     const nextComment = $("#" + commentId).next();
     const nextCommentId = nextComment.attr("id");
@@ -206,15 +225,25 @@ function replyComment(element) {
     }
 }
 
-function getReplyBox() {
+function getReplyBox(userName, commentIdx) {
     const replyBox =
-    `   <li id="cmtReply-write" class="reply_li underline">
-            <div id="cmtWriteBox" class="d-flex flex-column bg-light rounded p-3 m-2 comment-wirtebox" >
+    `   
+        <li id="cmtReply-write" class="reply_li underline">
+            <div id="cmtWriteBox" class="d-flex flex-column bg-light rounded p-3 m-2 comment-wirtebox">
                 <div class="mb-2">
-                    <textarea id="replyTextArea" class="form-control textarea-noresize"></textarea>
+                    <a href="/user-detail" class="link-secondary link-underline-opacity-0">
+                        <span class="align-middle fs-2 me-2">
+                            <i class="fa-regular fa-circle-user fa-lg"></i>
+                        </span>
+                        <span>${userName}</span>
+                    </a>
+                </div>
+                <div class="mb-2">
+                    <textarea id="replyTextArea" class="form-control textarea-noresize" placeholder="ALT+ENTER로 댓글을 등록할 수 있습니다."></textarea>
                 </div>
                 <div class="d-flex justify-content-end">
-                    <button class="btn btn-secondary submit-reply">등록</button>
+                    <button class="btn btn-dark submit-reply me-2">취소</button>
+                    <button id="replyBtn" class="btn btn-secondary submit-reply" data-idx="${commentIdx}" data-name="${userName}">등록</button>
                 </div>
             </div>
         </li>

@@ -56,7 +56,7 @@ public class CommentService {
         // 댓글 개수 조회
         int cmtCount = commentMapper.countCommentBypostId(pri_no);
 
-        boardMapper.updateCmtCount(CMT_ADD, pri_no);
+        boardMapper.increaseCmtCount(pri_no);
 
         newCommentRep.setCmt_count(cmtCount);
 
@@ -70,14 +70,14 @@ public class CommentService {
 
         if(deleteRows > 0) {
             int cmtCount = commentMapper.countCommentBypostId(pri_no);
+            boardMapper.decreaseCmtCount(pri_no);
+
             rep.setCmt_count(cmtCount);
             rep.setStatus(true);
             
             return rep;
         }
         rep.setStatus(false);
-
-        boardMapper.updateCmtCount(CMT_DEL, pri_no);
         
         return rep;
     }
